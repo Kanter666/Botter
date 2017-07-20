@@ -1,6 +1,9 @@
 import sys
 from PyQt5 import uic, QtWidgets
 import pyscreenshot as ImageGrab
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.widgets as widgets
 
 qtViewFile = "./Design/Main.ui"  # Enter file here.
 
@@ -30,7 +33,10 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             im = ImageGrab.grab()
         else:
             im = ImageGrab.grab(self.box)
+
         im.show()
+
+
 
     def onclicked_stop(self):
         print("stop")
@@ -41,7 +47,26 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def box_screen_radb(self):
         if self.boxsc_radb.isChecked():
+            self.fig = plt.figure()
+            self.ax = self.fig.add_subplot(111)
+            im = ImageGrab.grab()
+            arr = np.asarray(im)
+            plt_image = plt.imshow(arr)
+            rs = widgets.RectangleSelector(
+                self.ax, self.onselect, drawtype='box',
+                rectprops=dict(facecolor='red', edgecolor='black', alpha=0.5, fill=True))
+            plt.show()
             self.box = [20, 20, 100, 100]
+
+    def onselect(self, eclick, erelease):
+        if eclick.ydata > erelease.ydata:
+            eclick.ydata, erelease.ydata = erelease.ydata, eclick.ydata
+        if eclick.xdata > erelease.xdata:
+            eclick.xdata, erelease.xdata = erelease.xdata, eclick.xdata
+        self.ax.set_ylim(erelease.ydata, eclick.ydata)
+        self.ax.set_xlim(eclick.xdata, erelease.xdata)
+        self.box = (eclick.xdata, eclick.ydata, erelease.xdata, erelease.ydata)
+        self.fig.canvas.draw()
 
 
 if __name__ == "__main__":
