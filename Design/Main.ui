@@ -25,7 +25,7 @@
     </property>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+      <widget class="QDoubleSpinBox" name="frequency_spin_box"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -34,19 +34,37 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="5" column="0">
       <widget class="QPushButton" name="start_button">
        <property name="text">
         <string>Start recording screen</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="5" column="1">
       <widget class="QPushButton" name="stop_button">
        <property name="text">
         <string>Stop recording screen</string>
        </property>
       </widget>
+     </item>
+     <item row="1" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QRadioButton" name="boxsc_radb">
+         <property name="text">
+          <string>Selected box</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="fullsc_radb">
+         <property name="text">
+          <string>Full screen</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
