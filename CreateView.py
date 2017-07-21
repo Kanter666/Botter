@@ -18,7 +18,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.start_rec_bt.clicked.connect(self.onclicked_start)
-
+        self.analyse_rec_bt.clicked.connect(self.onclicked_analyse)
         self.stop_rec_bt.clicked.connect(self.onclicked_stop)
 
         self.fullsc_radb.setChecked(True)
@@ -34,20 +34,26 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
         im.show()
 
-
-
     def onclicked_stop(self):
         print("stop")
+
+    def onclicked_analyse(self):
+        print("analyse")
+        print(self.keyboard_chb.isChecked())
+        print(self.mouse_chb.isChecked())
 
     def full_screen_radb(self):
         if self.fullsc_radb.isChecked():
             self.box = 0
+            self.screen_mode.setText("Current mode: Full screen")
 
     def box_screen_radb(self):
         if self.boxsc_radb.isChecked():
             im = ImageGrab.grab()
+
             # Select ROI
             #r = cv2.selectROI(im)
+            self.screen_mode.setText("Current mode: not Full screen")
 
             #print([int(r[0]), int(r[1]), int(r[2]), int(r[3])])
 
