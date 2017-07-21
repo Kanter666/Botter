@@ -52,7 +52,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
             im = ImageGrab.grab()
 
             # Select ROI
-            #r = cv2.selectROI(im)
+#            r = cv2.selectROI(im)
             self.screen_mode.setText("Current mode: not Full screen")
 
             #print([int(r[0]), int(r[1]), int(r[2]), int(r[3])])

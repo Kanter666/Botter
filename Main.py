@@ -13,7 +13,7 @@ class MainWindow(QtWidgets.QMainWindow):
         '''
         QtWidgets.QMainWindow.__init__(self, parent)
         self.central_widget = QtWidgets.QStackedWidget()
-        self.setFixedSize(640, 640)
+        self.setFixedSize(640, 480)
         self.setCentralWidget(self.central_widget)
         self.start_screen = StartView()
         self.create_screen = CreateView()
