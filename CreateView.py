@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import uic, QtWidgets
-import pyscreenshot as ImageGrab
-#import cv2
+from PIL import ImageGrab
+import cv2
 import numpy as np
 
 qtViewFile = "./Design/Create.ui"  # Enter file here.
@@ -50,12 +50,16 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
     def box_screen_radb(self):
         if self.boxsc_radb.isChecked():
             im = ImageGrab.grab()
+            im.save("./image.png")
+
+            img = cv2.imread('./image.png')
 
             # Select ROI
-#            r = cv2.selectROI(im)
+            fromCenter = False
+            r = cv2.selectROI(img, fromCenter)
             self.screen_mode.setText("Current mode: not Full screen")
 
-            #print([int(r[0]), int(r[1]), int(r[2]), int(r[3])])
+            print([int(r[0]), int(r[1]), int(r[2]), int(r[3])])
 
 
 
