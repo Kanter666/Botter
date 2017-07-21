@@ -35,14 +35,14 @@
       </widget>
      </item>
      <item row="5" column="0">
-      <widget class="QPushButton" name="start_button">
+      <widget class="QPushButton" name="start_rec_bt">
        <property name="text">
         <string>Start recording screen</string>
        </property>
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QPushButton" name="stop_button">
+      <widget class="QPushButton" name="stop_rec_bt">
        <property name="text">
         <string>Stop recording screen</string>
        </property>

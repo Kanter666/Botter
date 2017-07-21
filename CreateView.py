@@ -17,9 +17,9 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
-        self.start_bt.clicked.connect(self.onclicked_start)
+        self.start_rec_bt.clicked.connect(self.onclicked_start)
 
-        self.stop_bt.clicked.connect(self.onclicked_stop)
+        self.stop_rec_bt.clicked.connect(self.onclicked_stop)
 
         self.fullsc_radb.setChecked(True)
         self.fullsc_radb.toggled.connect(self.full_screen_radb)
