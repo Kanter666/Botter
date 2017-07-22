@@ -55,11 +55,22 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
             img = cv2.imread('./image.png')
 
             # Select ROI
+            showCrosshair = False
             fromCenter = False
-            r = cv2.selectROI(img, fromCenter)
+            r = cv2.selectROI("Choose box and press any key", img, fromCenter, showCrosshair)
             self.screen_mode.setText("Current mode: not Full screen")
 
-            print([int(r[0]), int(r[1]), int(r[2]), int(r[3])])
+            print([int(r[0]), int(r[1]), int(r[2]), int(r[3])]) #x, y, width, height
+
+            # Crop image
+            imCrop = img[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])]
+
+            # Display cropped image
+            cv2.imshow("Press any key to finish", imCrop)
+            cv2.waitKey(0)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
 
 
 
