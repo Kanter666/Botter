@@ -1,8 +1,11 @@
 import sys
+import os
+import cv2
+
 from PyQt5 import uic, QtWidgets
 from PIL import ImageGrab
-import cv2
 import numpy as np
+from datetime import datetime
 
 qtViewFile = "./Design/Create.ui"  # Enter file here.
 
@@ -12,6 +15,7 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         self.box = 0
+        self.capture_screen = False
 
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
@@ -27,12 +31,25 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def onclicked_start(self):
         print("start", self.frequency_spin_box.value())
-        if isinstance(self.box, int):
-            im = ImageGrab.grab()
-        else:
-            im = ImageGrab.grab(self.box)
+        self.capture_screen = True
+        speed = self.frequency_spin_box.value()
 
-        im.show()
+        time_folder = datetime.now().strftime('%m%d_%H:%M:%S')
+
+        directory = "./" + time_folder
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        if isinstance(self.box, int):
+            while self.capture_screen:
+                im = ImageGrab.grab()
+                im.save("./"+time_folder+"/"+datetime.now().strftime('%m%d_%H_%M_%S')+".png")
+        else:
+            while self.capture_screen:
+                im = ImageGrab.grab(self.box)
+                im.save("./"+time_folder+"/"+datetime.now().strftime('%m%d_%H_%M_%S')+".png")
+
+
 
     def onclicked_stop(self):
         print("stop")
