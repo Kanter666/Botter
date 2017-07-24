@@ -1,7 +1,9 @@
 import sys
 import os
+import time
 import cv2
 
+from mss import mss
 from PyQt5 import uic, QtWidgets
 from PIL import ImageGrab
 import numpy as np
@@ -16,6 +18,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         self.box = 0
         self.capture_screen = False
+        self.sct = mss()
 
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
@@ -33,6 +36,8 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
         print("start", self.frequency_spin_box.value())
         self.capture_screen = True
         speed = self.frequency_spin_box.value()
+        if speed <= 0:
+            speed = 30
 
         time_folder = datetime.now().strftime('%m%d_%H:%M:%S')
 
@@ -42,12 +47,13 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if isinstance(self.box, int):
             while self.capture_screen:
-                im = ImageGrab.grab()
-                im.save("./"+time_folder+"/"+datetime.now().strftime('%m%d_%H_%M_%S')+".png")
+                self.sct.shot(output="./" + time_folder + "/" + datetime.now().strftime('%H_%M_%S_%MS') + ".png")
+                time.sleep(1./speed)
         else:
             while self.capture_screen:
-                im = ImageGrab.grab(self.box)
-                im.save("./"+time_folder+"/"+datetime.now().strftime('%m%d_%H_%M_%S')+".png")
+                sct_img = self.grab(self.box)
+                self.mss.tools.to_png(sct_img.rgb, sct_img.size, output="./" + time_folder + "/" + datetime.now().strftime('%H_%M_%S_%MS') + ".png")
+                time.sleep(1. / speed)
 
 
 
@@ -77,7 +83,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
             r = cv2.selectROI("Choose box and press any key", img, fromCenter, showCrosshair)
             self.screen_mode.setText("Current mode: not Full screen")
 
-            print([int(r[0]), int(r[1]), int(r[2]), int(r[3])]) #x, y, width, height
+            print([int(r[0]), int(r[1]), int(r[2]), int(r[3])])  # x, y, width, height
 
             # Crop image
             imCrop = img[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])]
