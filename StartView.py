@@ -1,7 +1,6 @@
 import sys
 
 from PyQt5 import uic, QtWidgets
-from CreateView import CreateView
 from PyQt5.QtCore import pyqtSignal
 
 qtViewFile = "./Design/Start.ui"  # Enter file here.

@@ -72,8 +72,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def box_screen_radb(self):
         if self.boxsc_radb.isChecked():
-            im = ImageGrab.grab()
-            im.save("./image.png")
+            self.sct.shot(output='./image.png')
 
             img = cv2.imread('./image.png')
 
