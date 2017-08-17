@@ -2,6 +2,7 @@ import sys
 import os
 import time
 import cv2
+import _thread
 
 from mss import mss
 from PyQt5 import uic, QtWidgets
@@ -44,6 +45,10 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
         if not os.path.exists(directory):
             os.makedirs(directory)
 
+        _thread.start_new_thread(self.record_screen, (time_folder, speed))
+
+    def record_screen(self, time_folder, speed):
+
         if isinstance(self.box, int):
             while self.capture_screen:
                 self.sct.shot(output="./" + time_folder + "/" + datetime.now().strftime('%H_%M_%S_%MS') + ".png")
@@ -57,6 +62,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     def onclicked_stop(self):
+        self.capture_screen = False
         print("stop")
 
     def onclicked_analyse(self):
