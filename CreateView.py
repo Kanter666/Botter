@@ -5,7 +5,6 @@ import cv2
 
 from mss import mss
 from PyQt5 import uic, QtWidgets
-from PIL import ImageGrab
 import numpy as np
 from datetime import datetime
 
