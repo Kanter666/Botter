@@ -3,10 +3,10 @@ import os
 import time
 import cv2
 import _thread
+import mss
+import mss.tools
 
-from mss import mss
 from PyQt5 import uic, QtWidgets
-import numpy as np
 from datetime import datetime
 
 qtViewFile = "./Design/Create.ui"  # Enter file here.
@@ -18,7 +18,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         self.box = 0
         self.capture_screen = False
-        self.sct = mss()
+        self.sct = mss.mss()
 
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
@@ -51,15 +51,13 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if isinstance(self.box, int):
             while self.capture_screen:
-                self.sct.shot(output="./" + time_folder + "/" + datetime.now().strftime('%H_%M_%S_%MS') + ".png")
+                self.sct.shot(mon=0, output="./" + time_folder + "/" + str(time.time()) + ".png")
                 time.sleep(1./speed)
         else:
             while self.capture_screen:
-                sct_img = self.grab(self.box)
-                self.mss.tools.to_png(sct_img.rgb, sct_img.size, output="./" + time_folder + "/" + datetime.now().strftime('%H_%M_%S_%MS') + ".png")
+                sct_img = self.sct.grab(self.box)
+                mss.tools.to_png(sct_img.rgb, sct_img.size, output="./" + time_folder + "/" + str(time.time()) + ".png")
                 time.sleep(1. / speed)
-
-
 
     def onclicked_stop(self):
         self.capture_screen = False
@@ -77,7 +75,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def box_screen_radb(self):
         if self.boxsc_radb.isChecked():
-            self.sct.shot(output='./image.png')
+            self.sct.shot(mon=-1, output='./image.png')
 
             img = cv2.imread('./image.png')
 
@@ -88,6 +86,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
             self.screen_mode.setText("Current mode: not Full screen")
 
             print([int(r[0]), int(r[1]), int(r[2]), int(r[3])])  # x, y, width, height
+            self.box = {'top': int(r[1]), 'left': int(r[0]), 'width': int(r[2]), 'height': int(r[3])}
 
             # Crop image
             imCrop = img[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])]
