@@ -7,6 +7,7 @@ import mss
 import mss.tools
 
 from PyQt5 import uic, QtWidgets
+from PyQt5.QtCore import pyqtSignal
 from datetime import datetime
 
 qtViewFile = "./Design/Create.ui"  # Enter file here.
@@ -15,6 +16,9 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 
 
 class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
+
+    clicked_analyse = pyqtSignal(list)
+
     def __init__(self):
         self.box = 0
         self.capture_screen = False
@@ -67,6 +71,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
         print("analyse")
         print(self.keyboard_chb.isChecked())
         print(self.mouse_chb.isChecked())
+        self.clicked_analyse.emit(["Sending message", 5])
 
     def full_screen_radb(self):
         if self.fullsc_radb.isChecked():
