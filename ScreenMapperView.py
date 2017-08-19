@@ -4,7 +4,6 @@ from ImageViewerQt import ImageViewerQt
 from os import listdir
 from PyQt5 import uic, QtWidgets
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QImage, QPixmap
 
 qtViewFile = "./Design/ScreenMapper.ui"  # Enter file here.
 
@@ -41,6 +40,15 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         image = self.folder+"/"+self.screens_cb.currentText()
         self.image_view.loadImageFromFile(image)
         print(self.folder+"/"+self.screens_cb.currentText())
+
+    # A key has been pressed!
+    def keyPressEvent(self, event):
+        if event.key() == QtWidgets.QtCore.Qt.Key_up:
+            if self.screens_cb.currentIndex() > 0:
+                self.screens_cb.setCurrentIndex(self.screens_cb.currentIndex()-1)
+        elif event.key() == QtWidgets.QtCore.Qt.Key_down:
+            if self.screens_cb.currentIndex() < (self.screens_cb.count()-1):
+                self.screens_cb.setCurrentIndex(self.screens_cb.currentIndex() + 1)
 
     def print_arguments(self):
         print(self.text)
