@@ -2,7 +2,7 @@ import sys
 
 from ImageViewerQt import ImageViewerQt
 from os import listdir
-from PyQt5 import uic, QtWidgets
+from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal
 
 qtViewFile = "./Design/ScreenMapper.ui"  # Enter file here.
@@ -22,12 +22,35 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         Ui_StartWindow.__init__(self)
         self.setupUi(self)
 
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+        QtWidgets.qApp.installEventFilter(self)
+
         self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
         self.finish_bt.clicked.connect(self.print_arguments)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
 
         self.image_view = ImageViewerQt()
         self.grid_layout.addWidget(self.image_view,0,0,10,1)
+
+    def eventFilter(self, source, event):
+        if event.type() == QtCore.QEvent.KeyPress:
+            print(event.key())
+        return super(ScreenMapperView, self).eventFilter(source, event)
+
+    def handleFullScreen(self):
+        print("f pressed")
+        if self.isFullScreen():
+            self.exitFullScreen()
+        else:
+            self.enterFullScreen()
+
+    def setChildrenFocusPolicy(self, policy):
+        def recursiveSetChildFocusPolicy(parentQWidget):
+            for childQWidget in parentQWidget.findChildren(QtWidgets.QWidget):
+                childQWidget.setFocusPolicy(policy)
+                recursiveSetChildFocusPolicy(childQWidget)
+
+        recursiveSetChildFocusPolicy(self)
 
     def set_arguments(self, arguments):
         self.folder = arguments[0]
@@ -43,12 +66,20 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
 
     # A key has been pressed!
     def keyPressEvent(self, event):
-        if event.key() == QtWidgets.QtCore.Qt.Key_up:
+        print("Key pressed: ")
+        print(event.key())
+        # key up
+        if event.key() == 16777235:
             if self.screens_cb.currentIndex() > 0:
-                self.screens_cb.setCurrentIndex(self.screens_cb.currentIndex()-1)
-        elif event.key() == QtWidgets.QtCore.Qt.Key_down:
-            if self.screens_cb.currentIndex() < (self.screens_cb.count()-1):
+                self.screens_cb.setCurrentIndex(self.screens_cb.currentIndex() - 1)
+        # key down
+        elif event.key() == 16777237:
+            if self.screens_cb.currentIndex() < (self.screens_cb.count() - 1):
                 self.screens_cb.setCurrentIndex(self.screens_cb.currentIndex() + 1)
+        # key f
+        elif event.key() == 70:
+            print("FFFFF")
+            self.handleFullScreen()
 
     def print_arguments(self):
         print(self.text)
