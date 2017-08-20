@@ -22,15 +22,15 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         Ui_StartWindow.__init__(self)
         self.setupUi(self)
 
-        self.setFocusPolicy(QtCore.Qt.StrongFocus)
-        QtWidgets.qApp.installEventFilter(self)
-
         self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
         self.finish_bt.clicked.connect(self.print_arguments)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
 
         self.image_view = ImageViewerQt()
-        self.grid_layout.addWidget(self.image_view,0,0,10,1)
+        self.grid_layout.addWidget(self.image_view, 0, 0, 10, 1)
+
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+        QtWidgets.qApp.installEventFilter(self)
 
     def eventFilter(self, source, event):
         if event.type() == QtCore.QEvent.KeyPress:
@@ -38,11 +38,12 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         return super(ScreenMapperView, self).eventFilter(source, event)
 
     def handleFullScreen(self):
-        print("f pressed")
-        if self.isFullScreen():
-            self.exitFullScreen()
+        if self.central_widget.isFullScreen():
+            print("Setting to normal")
+            self.central_widget.showMaximized()
         else:
-            self.enterFullScreen()
+            print("Setting to max")
+            self.central_widget.showFullScreen()
 
     def setChildrenFocusPolicy(self, policy):
         def recursiveSetChildFocusPolicy(parentQWidget):
@@ -76,10 +77,6 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         elif event.key() == 16777237:
             if self.screens_cb.currentIndex() < (self.screens_cb.count() - 1):
                 self.screens_cb.setCurrentIndex(self.screens_cb.currentIndex() + 1)
-        # key f
-        elif event.key() == 70:
-            print("FFFFF")
-            self.handleFullScreen()
 
     def print_arguments(self):
         print(self.text)
