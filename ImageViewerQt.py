@@ -4,7 +4,7 @@
 
 import os.path
 from PyQt5.QtCore import Qt, QRectF, pyqtSignal, QLineF
-from PyQt5.QtGui import QImage, QPixmap, QPainterPath
+from PyQt5.QtGui import QImage, QPixmap, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QFileDialog, QGraphicsRectItem
 
 
@@ -70,6 +70,8 @@ class ImageViewerQt(QGraphicsView):
 
         self.clickedX = 0
         self.clickedY = 0
+        self.current_box = None
+        self.box_style = QPen(Qt.red, 3)
 
     def hasImage(self):
         """ Returns whether or not the scene contains an image pixmap.
@@ -180,13 +182,16 @@ class ImageViewerQt(QGraphicsView):
                 smallY = self.clickedY
             else:
                 smallY = event.pos().y()
-            self.scene.addItem(QGraphicsRectItem(
+            if self.current_box:
+                self.scene.removeItem(self.current_box)
+            self.current_box = QGraphicsRectItem(
                 self.mapToScene(smallX, smallY).x(),
                 self.mapToScene(smallX, smallY).y(),
                 abs(self.clickedX-event.pos().x()),
                 abs(self.clickedY-event.pos().y())
-                )
             )
+            self.current_box.setPen(self.box_style)
+            self.scene.addItem(self.current_box)
         elif event.button() == Qt.RightButton:
             if self.canZoom:
                 viewBBox = self.zoomStack[-1] if len(self.zoomStack) else self.sceneRect()
