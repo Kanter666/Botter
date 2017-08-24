@@ -3,9 +3,9 @@
 """
 
 import os.path
-from PyQt5.QtCore import Qt, QRectF, pyqtSignal
+from PyQt5.QtCore import Qt, QRectF, pyqtSignal, QLineF
 from PyQt5.QtGui import QImage, QPixmap, QPainterPath
-from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QFileDialog
+from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QFileDialog, QGraphicsRectItem
 
 
 __author__ = "Marcel Goldschen-Ohm <marcel.goldschen@gmail.com>"
@@ -151,8 +151,8 @@ class ImageViewerQt(QGraphicsView):
         """
         scenePos = self.mapToScene(event.pos())
         if event.button() == Qt.LeftButton:
-            self.clickedX = scenePos.x()
-            self.clickedY = scenePos.y()
+            self.clickedX = event.pos().x()
+            self.clickedY = event.pos().y()
         elif event.button() == Qt.RightButton:
             if self.canZoom:
                 self.setDragMode(QGraphicsView.RubberBandDrag)
@@ -165,8 +165,27 @@ class ImageViewerQt(QGraphicsView):
         QGraphicsView.mouseReleaseEvent(self, event)
         scenePos = self.mapToScene(event.pos())
         if event.button() == Qt.LeftButton:
-            print("Left mouse box: x: {} , y: {} , x2: {} , y2: {}".format(
-                self.clickedX, self.clickedY, scenePos.x(), scenePos.y())
+            self.setDragMode(QGraphicsView.NoDrag)
+            print(
+                "Left mouse box: x: {} , y: {} , x2: {} , y2: {}".format(
+                    self.clickedX, self.clickedY, event.pos().x(), event.pos().y()
+                )
+            )
+            print("Event positon {} ".format(event.pos().x()))
+            if self.clickedX<event.pos().x():
+                smallX = self.clickedX
+            else:
+                smallX = event.pos().x()
+            if self.clickedY < event.pos().y():
+                smallY = self.clickedY
+            else:
+                smallY = event.pos().y()
+            self.scene.addItem(QGraphicsRectItem(
+                self.mapToScene(smallX, smallY).x(),
+                self.mapToScene(smallX, smallY).y(),
+                abs(self.clickedX-event.pos().x()),
+                abs(self.clickedY-event.pos().y())
+                )
             )
         elif event.button() == Qt.RightButton:
             if self.canZoom:
