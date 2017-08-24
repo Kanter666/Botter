@@ -66,7 +66,10 @@ class ImageViewerQt(QGraphicsView):
 
         # Flags for enabling/disabling mouse interaction.
         self.canZoom = True
-        self.canhasImagePan = True
+        self.canPan = True
+
+        self.clickedX = 0
+        self.clickedY = 0
 
     def hasImage(self):
         """ Returns whether or not the scene contains an image pixmap.
@@ -148,9 +151,8 @@ class ImageViewerQt(QGraphicsView):
         """
         scenePos = self.mapToScene(event.pos())
         if event.button() == Qt.LeftButton:
-            if self.canPan:
-                self.setDragMode(QGraphicsView.ScrollHandDrag)
-            self.leftMouseButtonPressed.emit(scenePos.x(), scenePos.y())
+            self.clickedX = scenePos.x()
+            self.clickedY = scenePos.y()
         elif event.button() == Qt.RightButton:
             if self.canZoom:
                 self.setDragMode(QGraphicsView.RubberBandDrag)
@@ -163,8 +165,9 @@ class ImageViewerQt(QGraphicsView):
         QGraphicsView.mouseReleaseEvent(self, event)
         scenePos = self.mapToScene(event.pos())
         if event.button() == Qt.LeftButton:
-            self.setDragMode(QGraphicsView.NoDrag)
-            self.leftMouseButtonReleased.emit(scenePos.x(), scenePos.y())
+            print("Left mouse box: x: {} , y: {} , x2: {} , y2: {}".format(
+                self.clickedX, self.clickedY, scenePos.x(), scenePos.y())
+            )
         elif event.button() == Qt.RightButton:
             if self.canZoom:
                 viewBBox = self.zoomStack[-1] if len(self.zoomStack) else self.sceneRect()
@@ -207,7 +210,7 @@ if __name__ == '__main__':
     viewer.loadImageFromFile()  # Pops up file dialog.
 
     # Handle left mouse clicks with custom slot.
-    viewer.leftMouseButtonPressed.connect(handleLeftClick)
+
 
     # Show viewer and run application.
     viewer.show()
