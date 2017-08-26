@@ -70,6 +70,7 @@ class ImageViewerQt(QGraphicsView):
 
         self.clickedX = 0
         self.clickedY = 0
+        self.zoom = 1
         self.current_box = None
         self.box_style = QPen(Qt.red, 3)
 
@@ -138,10 +139,15 @@ class ImageViewerQt(QGraphicsView):
         if not self.hasImage():
             return
         if len(self.zoomStack) and self.sceneRect().contains(self.zoomStack[-1]):
-            self.fitInView(self.zoomStack[-1], Qt.IgnoreAspectRatio)  # Show zoomed rect (ignore aspect ratio).
+            self.fitInView(self.zoomStack[-1], Qt.KeepAspectRatio)  # Show zoomed rect (ignore aspect ratio).
         else:
             self.zoomStack = []  # Clear the zoom stack (in case we got here because of an invalid zoom).
             self.fitInView(self.sceneRect(), self.aspectRatioMode)  # Show entire image (use current aspect ratio mode).
+        rect = QRectF(self.pixmap().rect())
+        if not rect.isNull():
+            scenerect = self.transform().mapRect(rect)
+            self.zoom = min(self.scene.width() / scenerect.width(),
+                         self.scene.height() / scenerect.height())
 
     def resizeEvent(self, event):
         """ Maintain current zoom on resize.
@@ -168,12 +174,6 @@ class ImageViewerQt(QGraphicsView):
         scenePos = self.mapToScene(event.pos())
         if event.button() == Qt.LeftButton:
             self.setDragMode(QGraphicsView.NoDrag)
-            print(
-                "Left mouse box: x: {} , y: {} , x2: {} , y2: {}".format(
-                    self.clickedX, self.clickedY, event.pos().x(), event.pos().y()
-                )
-            )
-            print("Event positon {} ".format(event.pos().x()))
             if self.clickedX<event.pos().x():
                 smallX = self.clickedX
             else:
@@ -187,8 +187,8 @@ class ImageViewerQt(QGraphicsView):
             self.current_box = QGraphicsRectItem(
                 self.mapToScene(smallX, smallY).x(),
                 self.mapToScene(smallX, smallY).y(),
-                abs(self.clickedX-event.pos().x()),
-                abs(self.clickedY-event.pos().y())
+                self.zoom*abs(self.clickedX-event.pos().x()),
+                self.zoom*abs(self.clickedY-event.pos().y())
             )
             self.current_box.setPen(self.box_style)
             self.scene.addItem(self.current_box)
@@ -215,7 +215,6 @@ class ImageViewerQt(QGraphicsView):
                 self.updateViewer()
             self.rightMouseButtonDoubleClicked.emit(scenePos.x(), scenePos.y())
         QGraphicsView.mouseDoubleClickEvent(self, event)
-
 
 if __name__ == '__main__':
     import sys
