@@ -40,24 +40,33 @@
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="2" column="0">
-     <widget class="QRadioButton" name="radioButton">
+     <widget class="QRadioButton" name="number_rb">
       <property name="text">
        <string>Get number(float)</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">function_type</string>
+      </attribute>
      </widget>
     </item>
     <item row="2" column="1">
-     <widget class="QRadioButton" name="radioButton_3">
+     <widget class="QRadioButton" name="string_rb">
       <property name="text">
        <string>Get string(string)</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">function_type</string>
+      </attribute>
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QRadioButton" name="radioButton_4">
+     <widget class="QRadioButton" name="position_rb">
       <property name="text">
        <string>Get position of image(x,y)</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">function_type</string>
+      </attribute>
      </widget>
     </item>
     <item row="1" column="0" colspan="2">
@@ -68,10 +77,13 @@
      </widget>
     </item>
     <item row="3" column="0">
-     <widget class="QRadioButton" name="radioButton_2">
+     <widget class="QRadioButton" name="bool_rb">
       <property name="text">
        <string>Is image in box?(bool)</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">function_type</string>
+      </attribute>
      </widget>
     </item>
     <item row="0" column="0" colspan="2">
@@ -119,4 +131,11 @@
    </hints>
   </connection>
  </connections>
+ <buttongroups>
+  <buttongroup name="function_type">
+   <property name="exclusive">
+    <bool>true</bool>
+   </property>
+  </buttongroup>
+ </buttongroups>
 </ui>
