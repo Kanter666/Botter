@@ -2,10 +2,11 @@ import os
 import cv2
 
 from ImageViewerQt import ImageViewerQt
+from FunctionDialog import FunctionDialog
 from os import listdir
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QDialog
 
 qtViewFile = "./Design/ScreenMapper.ui"  # Enter file here.
 
@@ -27,6 +28,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
         self.finish_bt.clicked.connect(self.print_arguments)
         self.save_image_bt.clicked.connect(self.save_image)
+        self.add_function_bt.clicked.connect(self.add_function)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
 
         self.image_view = ImageViewerQt()
@@ -98,6 +100,13 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
             "Image Files (*.png)"
         )
         cv2.imwrite(directory+".png", imCrop)
+
+    def add_function(self):
+        box = self.image_view.getBoxDimensions()
+
+        if box:
+            name = FunctionDialog.get_function()
+            print("Got this name: "+name)
 
     def print_arguments(self):
         print(self.text)
