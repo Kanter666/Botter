@@ -25,10 +25,13 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         Ui_StartWindow.__init__(self)
         self.setupUi(self)
 
+        self.box_functions = []
+
         self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
         self.finish_bt.clicked.connect(self.print_arguments)
         self.save_image_bt.clicked.connect(self.save_image)
         self.add_function_bt.clicked.connect(self.add_function)
+        self.delete_bt.clicked.connect(self.delete_function)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
 
         self.image_view = ImageViewerQt()
@@ -106,7 +109,14 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
 
         if box:
             function_box = FunctionDialog.get_function(box, self.folder)
-            print("Got this name: "+function_box.name+" of type "+function_box.function_type)
+            self.box_functions.append(function_box)
+            self.box_function_lw.addItem("{}({})".format(function_box.name, function_box.function_type))
+
+    def delete_function(self):
+        index = self.box_function_lw.currentRow()
+        print("Current inde is {}, and name of the function should be: {}".format(index, self.box_functions[index].name))
+        self.box_function_lw.takeItem(index)
+        del self.box_functions[index]
 
     def print_arguments(self):
-        print(self.text)
+        print(len(self.box_functions))

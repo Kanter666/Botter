@@ -81,7 +81,7 @@
      </widget>
     </item>
     <item row="3" column="1" colspan="2">
-     <widget class="QListWidget" name="listWidget">
+     <widget class="QListWidget" name="box_function_lw">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
