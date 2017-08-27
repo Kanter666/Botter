@@ -72,6 +72,7 @@ class ImageViewerQt(QGraphicsView):
         self.clickedY = 0
         self.zoom = 1
         self.current_box = None
+        self.box_dimension = None
         self.box_style = QPen(Qt.red, 3)
 
     def hasImage(self):
@@ -184,12 +185,19 @@ class ImageViewerQt(QGraphicsView):
                 smallY = event.pos().y()
             if self.current_box:
                 self.scene.removeItem(self.current_box)
-            self.current_box = QGraphicsRectItem(
+            self.box_dimension = [
                 self.mapToScene(smallX, smallY).x(),
                 self.mapToScene(smallX, smallY).y(),
-                self.zoom*abs(self.clickedX-event.pos().x()),
-                self.zoom*abs(self.clickedY-event.pos().y())
+                self.zoom * abs(self.clickedX - event.pos().x()),
+                self.zoom * abs(self.clickedY - event.pos().y())
+            ]
+            self.current_box = QGraphicsRectItem(
+                self.box_dimension[0],
+                self.box_dimension[1],
+                self.box_dimension[2],
+                self.box_dimension[3]
             )
+
             self.current_box.setPen(self.box_style)
             self.scene.addItem(self.current_box)
         elif event.button() == Qt.RightButton:
@@ -215,6 +223,9 @@ class ImageViewerQt(QGraphicsView):
                 self.updateViewer()
             self.rightMouseButtonDoubleClicked.emit(scenePos.x(), scenePos.y())
         QGraphicsView.mouseDoubleClickEvent(self, event)
+
+    def getBoxDimensions(self):
+        return self.box_dimension
 
 if __name__ == '__main__':
     import sys

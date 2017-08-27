@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="main_window">
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="central_widget">
+  <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
      <horstretch>0</horstretch>
@@ -49,19 +49,15 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="2">
-     <widget class="QPushButton" name="cancel_bt">
-      <property name="text">
-       <string>Cancel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1">
+    <item row="6" column="1">
      <widget class="QPushButton" name="finish_bt">
       <property name="text">
        <string>Finish</string>
       </property>
      </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QComboBox" name="screens_cb"/>
     </item>
     <item row="2" column="1" colspan="2">
      <widget class="QLabel" name="label_3">
@@ -70,20 +66,17 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
-     <widget class="QComboBox" name="screens_cb"/>
-    </item>
-    <item row="4" column="1">
-     <widget class="QPushButton" name="pushButton_3">
+    <item row="6" column="2">
+     <widget class="QPushButton" name="cancel_bt">
       <property name="text">
-       <string>Add new</string>
+       <string>Cancel</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="2">
-     <widget class="QPushButton" name="pushButton_4">
+    <item row="0" column="1">
+     <widget class="QLabel" name="label">
       <property name="text">
-       <string>Delete</string>
+       <string>Screen number:</string>
       </property>
      </widget>
     </item>
@@ -97,10 +90,24 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="label">
+    <item row="4" column="2">
+     <widget class="QPushButton" name="pushButton_4">
       <property name="text">
-       <string>Screen number:</string>
+       <string>Delete</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Add new</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1" colspan="2">
+     <widget class="QPushButton" name="save_image_bt">
+      <property name="text">
+       <string>Save selected area for later mapping</string>
       </property>
      </widget>
     </item>
