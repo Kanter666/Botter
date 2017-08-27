@@ -105,8 +105,8 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         box = self.image_view.getBoxDimensions()
 
         if box:
-            name = FunctionDialog.get_function(box)
-            print("Got this name: "+name)
+            function_box = FunctionDialog.get_function(box, self.folder)
+            print("Got this name: "+function_box.name+" of type "+function_box.function_type)
 
     def print_arguments(self):
         print(self.text)

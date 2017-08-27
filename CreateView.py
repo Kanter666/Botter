@@ -101,12 +101,3 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
             cv2.waitKey(0)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
-
-
-
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = CreateView()
-    window.show()
-    sys.exit(app.exec_())
