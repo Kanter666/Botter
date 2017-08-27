@@ -72,8 +72,10 @@ class ImageViewerQt(QGraphicsView):
         self.clickedY = 0
         self.zoom = 1
         self.current_box = None
+        self.selected_box = None
         self.box_dimension = None
         self.box_style = QPen(Qt.red, 3)
+        self.selected_box_style = QPen(Qt.green, 3)
 
     def hasImage(self):
         """ Returns whether or not the scene contains an image pixmap.
@@ -210,6 +212,20 @@ class ImageViewerQt(QGraphicsView):
                     self.updateViewer()
             self.setDragMode(QGraphicsView.NoDrag)
             self.rightMouseButtonReleased.emit(scenePos.x(), scenePos.y())
+
+    def show_selected_box(self, box):
+        if self.selected_box:
+            self.scene.removeItem(self.selected_box)
+
+        self.selected_box = QGraphicsRectItem(
+            box[0],
+            box[1],
+            box[2],
+            box[3]
+        )
+
+        self.selected_box.setPen(self.selected_box_style)
+        self.scene.addItem(self.selected_box)
 
     def mouseDoubleClickEvent(self, event):
         """ Show entire image.

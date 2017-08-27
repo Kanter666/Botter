@@ -33,6 +33,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.add_function_bt.clicked.connect(self.add_function)
         self.delete_bt.clicked.connect(self.delete_function)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
+        self.box_function_lw.itemSelectionChanged.connect(self.show_box)
 
         self.image_view = ImageViewerQt()
         self.grid_layout.addWidget(self.image_view, 0, 0, 10, 1)
@@ -117,6 +118,10 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         print("Current inde is {}, and name of the function should be: {}".format(index, self.box_functions[index].name))
         self.box_function_lw.takeItem(index)
         del self.box_functions[index]
+
+    def show_box(self):
+        box = self.box_functions[self.box_function_lw.currentRow()].box
+        self.image_view.show_selected_box(box)
 
     def print_arguments(self):
         print(len(self.box_functions))
