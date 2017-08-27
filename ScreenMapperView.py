@@ -5,6 +5,7 @@ from ImageViewerQt import ImageViewerQt
 from os import listdir
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
 
 qtViewFile = "./Design/ScreenMapper.ui"  # Enter file here.
 
@@ -87,11 +88,16 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
 
         imCrop = img[int(box[1]):int(box[1] + box[3]), int(box[0]):int(box[0] + box[2])]
 
-        directory = self.folder+"/Images"
+        if not os.path.exists(self.folder+"/Images"):
+            os.makedirs(self.folder+"/Images")
 
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        cv2.imwrite(directory+"/img.png", imCrop)
+        directory, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save image",
+            self.folder+"/Images",
+            "Image Files (*.png)"
+        )
+        cv2.imwrite(directory+".png", imCrop)
 
     def print_arguments(self):
         print(self.text)
