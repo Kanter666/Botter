@@ -1,12 +1,12 @@
 class BoxFunction(object):
 
-    def __init__(self, name, function_type, box, image=None):
+    def __init__(self, name, ftype, box, image=None):
 
         self.name = name
-        self.function_type = function_type
+        self.type = ftype
         self.box = box
 
-        if self.function_type == "position" or self.function_type == "is_there":
+        if self.type == "position" or self.type == "is_there":
             if image:
                 self.image = image
             else:
