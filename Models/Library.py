@@ -18,11 +18,14 @@ class Library(object):
             file.write("class {}(object):\n".format(name))
             file.write("\n")
             file.write("    def __init__(self):\n")
-            file.write("        pass\n")
+            file.write("        self.box = {}\n".format(self.screen_box))
             file.write("\n")
             file.write("    def grab_screen(self):\n")
-            file.write("        with mss() as sct:\n")
-            file.write("            img = sct.shot()\n")
+            if self.screen_box:
+                file.write("        img = self.sct.grab(self.box)")
+            else:
+                file.write("        with mss() as sct:\n")
+                file.write("            img = sct.shot()\n")
             file.write("        return img\n")
             file.write("")
             file.write("")
