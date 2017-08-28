@@ -138,5 +138,5 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
             self.folder,
             "Python Files (*.py)"
         )
-        lib = Library(directory, None, self.folder, self.box_functions)
+        lib = Library(directory, self.box, self.folder, self.box_functions)
         lib.create_library()
