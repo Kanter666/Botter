@@ -1,8 +1,11 @@
 import os
 import cv2
 
+
 from ImageViewerQt import ImageViewerQt
 from FunctionDialog import FunctionDialog
+from Models.Library import Library
+
 from os import listdir
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal
@@ -28,7 +31,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.box_functions = []
 
         self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
-        self.finish_bt.clicked.connect(self.print_arguments)
+        self.finish_bt.clicked.connect(self.finish)
         self.save_image_bt.clicked.connect(self.save_image)
         self.add_function_bt.clicked.connect(self.add_function)
         self.delete_bt.clicked.connect(self.delete_function)
@@ -123,5 +126,12 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         box = self.box_functions[self.box_function_lw.currentRow()].box
         self.image_view.show_selected_box(box)
 
-    def print_arguments(self):
-        print(len(self.box_functions))
+    def finish(self):
+        directory, _ = QFileDialog.getSaveFileName(
+            self,
+            "Create library file",
+            self.folder,
+            "Python Files (*.py)"
+        )
+        lib = Library(directory, None, self.folder, self.box_functions)
+        lib.create_library()
