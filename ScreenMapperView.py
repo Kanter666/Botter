@@ -29,6 +29,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.setupUi(self)
 
         self.box_functions = []
+        self.box = None
 
         self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
         self.finish_bt.clicked.connect(self.finish)
@@ -71,11 +72,15 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.screens_cb.clear()
         self.screens_cb.addItems(files)
         self.screens_cb.setCurrentIndex(0)
+        if os.path.isfile(self.folder + "/box.txt"):
+            with open(self.folder + "/box.txt", 'r') as f:
+                self.box = eval(f.readline())
 
     def screen_changed(self, i):
         image = self.folder+"/"+self.screens_cb.currentText()
         self.image_view.loadImageFromFile(image)
         print(self.folder+"/"+self.screens_cb.currentText())
+        print("Box of the scrren: {} and it's length {}".format(self.box, len(self.box)))
 
     # A key has been pressed!
     def keyPressEvent(self, event):

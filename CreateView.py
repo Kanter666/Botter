@@ -62,6 +62,8 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
                 sct_img = self.sct.grab(self.box)
                 mss.tools.to_png(sct_img.rgb, sct_img.size, output="./" + time_folder + "/" + str(time.time()) + ".png")
                 time.sleep(1. / speed)
+            with open("./" + time_folder + "/box.txt", 'w') as file:
+                file.write("{}\n".format(self.box))
 
     def onclicked_stop(self):
         self.capture_screen = False

@@ -1,2 +1,8 @@
 
 *.png
+
+0819_09:35:09/__pycache__/
+
+\.idea/
+
+__pycache__/
