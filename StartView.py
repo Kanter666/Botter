@@ -11,6 +11,7 @@ Ui_StartWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 class StartView(QtWidgets.QMainWindow, Ui_StartWindow):
 
     clicked_create = pyqtSignal()
+    clicked_load = pyqtSignal(list)
     def __init__(self):
         self.box = 0
 
@@ -30,9 +31,5 @@ class StartView(QtWidgets.QMainWindow, Ui_StartWindow):
             "./",
             "Python Files (*.py)"
         )
-        Library.load_library(library)
-
-
-
-    def onclicked_create(self):
-        print("create")
+        directory, functions = Library.load_library(library)
+        self.clicked_load.emit([directory, functions])

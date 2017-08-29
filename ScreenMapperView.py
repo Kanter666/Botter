@@ -69,6 +69,8 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
     def set_arguments(self, arguments, functions=[]):
         self.folder = arguments[0]
         self.box_functions = functions
+        for fun in functions:
+            self.box_function_lw.addItem("{}({})".format(fun.name, fun.type))
         files = listdir(self.folder)
         self.screens_cb.clear()
         self.screens_cb.addItems(files)

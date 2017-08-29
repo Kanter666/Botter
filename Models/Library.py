@@ -1,5 +1,7 @@
 import os
 
+from Models.BoxFunction import BoxFunction
+
 
 class Library(object):
 
@@ -10,6 +12,7 @@ class Library(object):
         self.directory = directory
         self.functions = functions
 
+    @staticmethod
     def create_library(destination, screen_box, directory, functions):
         name = os.path.basename(os.path.normpath(destination))
         with open(destination+".py", 'w') as file:
@@ -55,6 +58,7 @@ class Library(object):
             file.write("")
             file.write("")
 
+    @staticmethod
     def load_library(destination):
         directory = None
         functions = []
@@ -86,8 +90,12 @@ class Library(object):
                     elif returnline[1] == "float(pytesseract.image_to_string(cropped))":
                         function_type = "number"
                     print("this function is type of {} \n".format(function_type))
+                    function = BoxFunction(function_name, function_type, function_box)
+                    functions.append(function)
                     i += 2
                 i += 1
+
+        return directory, functions
 
 
 
