@@ -66,8 +66,9 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
 
         recursiveSetChildFocusPolicy(self)
 
-    def set_arguments(self, arguments):
+    def set_arguments(self, arguments, functions=[]):
         self.folder = arguments[0]
+        self.box_functions = functions
         files = listdir(self.folder)
         self.screens_cb.clear()
         self.screens_cb.addItems(files)
@@ -80,7 +81,6 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         image = self.folder+"/"+self.screens_cb.currentText()
         self.image_view.loadImageFromFile(image)
         print(self.folder+"/"+self.screens_cb.currentText())
-        print("Box of the scrren: {} and it's length {}".format(self.box, len(self.box)))
 
     # A key has been pressed!
     def keyPressEvent(self, event):
@@ -138,5 +138,4 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
             self.folder,
             "Python Files (*.py)"
         )
-        lib = Library(directory, self.box, self.folder, self.box_functions)
-        lib.create_library()
+        Library.create_library(directory, self.box, self.folder, self.box_functions)

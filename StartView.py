@@ -1,5 +1,8 @@
+from Models.Library import Library
+
 from PyQt5 import uic, QtWidgets
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QFileDialog
 
 qtViewFile = "./Design/Start.ui"  # Enter file here.
 
@@ -21,6 +24,14 @@ class StartView(QtWidgets.QMainWindow, Ui_StartWindow):
 
     def onclicked_load(self):
         print("load")
+        library, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select file of library that you want to load",
+            "./",
+            "Python Files (*.py)"
+        )
+        Library.load_library(library)
+
 
 
     def onclicked_create(self):
