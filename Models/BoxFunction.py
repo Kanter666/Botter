@@ -10,5 +10,5 @@ class BoxFunction(object):
             if image:
                 self.image = image
             else:
-                raise ValueError('{} needs to have an image to '.format(self.name))
+                raise ValueError('{} needs to have an image to work properly'.format(self.name))
 

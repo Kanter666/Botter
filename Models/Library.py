@@ -16,9 +16,10 @@ class Library(object):
     def create_library(destination, screen_box, directory, functions):
         name = os.path.basename(os.path.normpath(destination))
         with open(destination+".py", 'w') as file:
-            if any(function.type == "number" or function.type == "string" for function in functions):
-                file.write("from PIL import Image\n")
-                file.write("import pytesseract\n")
+            if any(function.type == "position" or function.type == "is_there" for function in functions):
+                file.write("import random\n")
+            file.write("import pytesseract\n")
+            file.write("from PIL import Image\n")
             file.write("from mss import mss\n")
             file.write("\n\n")
             file.write("class {}(object):\n".format(name))
@@ -51,7 +52,36 @@ class Library(object):
                     file.write("        return pytesseract.image_to_string(cropped)\n")
                 elif function.type == "number":
                     file.write("        return float(pytesseract.image_to_string(cropped))\n")
-                file.write("\n")
+                elif function.type == "position":
+                    file.write("        image = Image.open({})\n".format(function.image))
+                    file.write("        \n")
+                    file.write("        samples = 5\n")
+                    file.write("        pixels = []\n")
+                    file.write("        while len(pixels) < samples:\n")
+                    file.write("            x = random.randint (0, image.size [0] - 1)\n")
+                    file.write("            y = random.randint (0, image.size [1] - 1)\n")
+                    file.write("            pixel = image.getpixel((x, y))\n")
+                    file.write("            if pixel[-1] > 200:\n")
+                    file.write("                pixels.append(((x, y), pixel[:-1]))\n")
+                    file.write("        def diff(a, b):\n")
+                    file.write("            return sum((a - b) ** 2 for a, b in zip(a, b))\n")
+                    file.write("        \n")
+                    file.write("        best = []\n")
+                    file.write("        for x in range (im.size [0] ):\n")
+                    file.write("            for y in range (im.size [1] ):\n")
+                    file.write("                d = 0\n")
+                    file.write("                for coor, pixel in pixels:\n")
+                    file.write("                    try:\n")
+                    file.write("                        ipixel = im.getpixel ( (x + coor [0], y + coor [1] ) )\n")
+                    file.write("                        d += diff (ipixel, pixel)\n")
+                    file.write("                    except IndexError:\n")
+                    file.write("                        d += 256 ** 2 * 3\n")
+                    file.write("                best.append ( (d, x, y) )\n")
+                    file.write("                best.sort (key = lambda x: x [0] )\n")
+                    file.write("                best = best [:3]\n")
+                    file.write("\n")
+
+            file.write("\n")
 
             file.write("")
             file.write("")
