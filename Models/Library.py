@@ -18,7 +18,8 @@ class Library(object):
         with open(destination+".py", 'w') as file:
             if any(function.type == "position" or function.type == "is_there" for function in functions):
                 file.write("import random\n")
-            file.write("import pytesseract\n")
+            file.write("import pyocr\n")
+            file.write("import pyocr.builders\n")
             file.write("from PIL import Image\n")
             file.write("from mss import mss\n")
             file.write("\n\n")
@@ -28,6 +29,11 @@ class Library(object):
             file.write("\n")
             file.write("    def __init__(self):\n")
             file.write("        self.img = None\n")
+            file.write("        tools = pyocr.get_available_tools()\n")
+            file.write("""      if len(tools) == 0:\n            print("No OCR tool found")\n            sys.exit(1)\n""")
+            file.write("        self.tool = tools[0]\n")
+            file.write("""        print("Will use tool '%s'" % (tool.get_name()))\n""")
+            file.write("        \n")
             file.write("\n")
             file.write("    def grab_screen(self):\n")
             file.write("        with mss() as sct:\n")
@@ -49,9 +55,9 @@ class Library(object):
                     )
                 )
                 if function.type == "string":
-                    file.write("        return pytesseract.image_to_string(cropped)\n")
+                    file.write("""        return self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.TextBuilder())\n""")
                 elif function.type == "number":
-                    file.write("        return float(pytesseract.image_to_string(cropped))\n")
+                    file.write("""        return float(self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.TextBuilder()))\n""")
                 elif function.type == "position":
                     file.write("        image = Image.open({})\n".format(function.image))
                     file.write("        \n")
