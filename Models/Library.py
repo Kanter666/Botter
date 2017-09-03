@@ -18,6 +18,8 @@ class Library(object):
         with open(destination+".py", 'w') as file:
             if any(function.type == "position" or function.type == "is_there" for function in functions):
                 file.write("import random\n")
+                file.write("import numpy\n")
+                file.write("import cv2\n")
             file.write("import pyocr\n")
             file.write("import pyocr.builders\n")
             file.write("from PIL import Image\n")
@@ -60,13 +62,12 @@ class Library(object):
                     file.write("""        return float(self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.TextBuilder()))\n""")
                 elif function.type == "position":
                     file.write("""        image = cv2.("{}")\n""".format(function.image))
-                    file.write("        cropped = cv2.imread(cropped)\n")
+                    file.write("        cropped = numpy.array(cropped)[:, :, ::-1].copy()\n")
                     file.write("        \n")
                     file.write("        res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n")
-                    file.write("        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)\n")
-                    file.write("        top_left = max_loc\n")
-                    file.write("        bottom_right = (top_left[0] + w, top_left[1] + h)\n")
-                    file.write("        return (top_left, bottom_right)\n")
+                    file.write("        threshold = 0.8\n")
+                    file.write("        loc = np.where( res >= threshold)\n")
+                    file.write("        return loc\n")
                     file.write("\n")
 
             file.write("\n")
