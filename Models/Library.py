@@ -1,4 +1,5 @@
 import os
+import ast
 
 from Models.BoxFunction import BoxFunction
 
@@ -26,8 +27,9 @@ class Library(object):
             file.write("from mss import mss\n")
             file.write("\n\n")
             file.write("class {}(object):\n".format(name))
-            file.write("# screen_box = {}\n".format(screen_box))
-            file.write("# directory = {}\n".format(directory))
+            file.write(
+                """# c {{'screen_box': {}, 'directory': {}}}\n""".format(
+                    screen_box, directory))
             file.write("\n")
             file.write("    def __init__(self):\n")
             file.write("        self.img = None\n")
@@ -48,6 +50,11 @@ class Library(object):
             file.write("\n")
             for function in functions:
                 file.write("    def {}(self):\n".format(function.name))
+                file.write(
+                    "# f BoxFunction({}, {}, {}, {})\n".format(
+                        function.name, function.type, function.box, function.image
+                    )
+                )
                 file.write(
                     "        cropped = self.img.crop([{}, {}, {}, {}])\n".format(
                         int(function.box[0]),
@@ -93,31 +100,17 @@ class Library(object):
             while i < len(lines):
                 print("line number {} has this text: {}".format(i, lines[i]))
 
-                splitline = lines[i].split()
-                if len(splitline) < 2:
-                    i += 1
+                if len(lines[i])<4:
                     continue
-                if splitline[0] == "#" and splitline[1] == "directory":
-                    directory = splitline[3]
-                    i += 8
-                    print("Directory is {} . and we increased curent line to {}".format(directory, i))
-                elif len(splitline[1]) > 7 and splitline[1][-7:] == "(self):" \
-                    and splitline[1][:-7] != "grab_screen":
-                    function_name = splitline[1][:-7]
-                    crop = lines[(i+1)][33:][:-3]
-                    crop = crop.split(",")
-                    print("Current function: {} \ncrop after splitting: {}".format(function_name, crop))
-                    function_box = [int(crop[0]), int(crop[1]), (int(crop[2])-int(crop[0])), (int(crop[3])-int(crop[1]))]
-                    print("Calculated box = {}".format(function_box))
-                    returnline = lines[(i+2)].split()
-                    if returnline[1] == "pytesseract.image_to_string(cropped)":
-                        function_type = "string"
-                    elif returnline[1] == "float(pytesseract.image_to_string(cropped))":
-                        function_type = "number"
-                    print("this function is type of {} \n".format(function_type))
-                    function = BoxFunction(function_name, function_type, function_box)
-                    functions.append(function)
-                    i += 2
+                else:
+                    if lines[i][:3] == "# c":
+                        class_data = ast.literal_eval(lines[i][4:])
+                        directory = class_data["directory"]
+                        print("Directory is {} . and we increased curent line to {}".format(directory, i))
+                        i += 8
+                    elif lines[i][:3] == "# f":
+                        functions.append(eval(lines[i][4:]))
+                        i += 2
                 i += 1
 
         return directory, functions

@@ -5,10 +5,8 @@ class BoxFunction(object):
         self.name = name
         self.type = ftype
         self.box = box
+        self.image = image
 
         if self.type == "position" or self.type == "is_there":
-            if image:
-                self.image = image
-            else:
+            if not image:
                 raise ValueError('{} needs to have an image to work properly'.format(self.name))
-
