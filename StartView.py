@@ -32,4 +32,4 @@ class StartView(QtWidgets.QMainWindow, Ui_StartWindow):
             "Python Files (*.py)"
         )
         directory, functions = Library.load_library(library)
-        self.clicked_load.emit([directory, functions])
+        self.clicked_load.emit([directory, library, functions])

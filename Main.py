@@ -42,7 +42,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def load_library(self, arguments):
         self.central_widget.setCurrentWidget(self.mapper_screen)
-        self.mapper_screen.set_arguments([arguments[0]], functions=arguments[1])
+        self.mapper_screen.set_arguments([arguments[0], arguments[1]], functions=arguments[2])
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
