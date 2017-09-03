@@ -23,6 +23,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
     def __init__(self):
 
         self.folder = None
+        self.library = None
 
         QtWidgets.QMainWindow.__init__(self)
         Ui_StartWindow.__init__(self)
@@ -32,7 +33,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.box = None
 
         self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
-        self.finish_bt.clicked.connect(self.finish)
+        self.change_name_bt.clicked.connect(self.change_name)
         self.save_image_bt.clicked.connect(self.save_image)
         self.add_function_bt.clicked.connect(self.add_function)
         self.delete_bt.clicked.connect(self.delete_function)
@@ -68,6 +69,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
 
     def set_arguments(self, arguments, functions=[]):
         self.folder = arguments[0]
+        self.library = arguments[1]
         self.box_functions = functions
         for fun in functions:
             self.box_function_lw.addItem("{}({})".format(fun.name, fun.type))
@@ -122,22 +124,25 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
             function_box = FunctionDialog.get_function(box, self.folder)
             self.box_functions.append(function_box)
             self.box_function_lw.addItem("{}({})".format(function_box.name, function_box.type))
+            Library.create_library(self.library, self.box, self.folder, self.box_functions)
 
     def delete_function(self):
         index = self.box_function_lw.currentRow()
         print("Current inde is {}, and name of the function should be: {}".format(index, self.box_functions[index].name))
         self.box_function_lw.takeItem(index)
         del self.box_functions[index]
+        Library.create_library(self.library, self.box, self.folder, self.box_functions)
 
     def show_box(self):
         box = self.box_functions[self.box_function_lw.currentRow()].box
         self.image_view.show_selected_box(box)
 
-    def finish(self):
+    def change_name(self):
         directory, _ = QFileDialog.getSaveFileName(
             self,
             "Create library file",
             self.folder,
             "Python Files (*.py)"
         )
-        Library.create_library(directory, self.box, self.folder, self.box_functions)
+        self.library = directory
+

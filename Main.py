@@ -31,8 +31,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def openMapper(self, arguments):
         file = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory with your screen recording"))
+        directory, _ = QtWidgets.QFileDialog.getSaveFileName(
+            self,
+            "Create library file",
+            ".",
+            "Python Files (*.py)"
+        )
         self.central_widget.setCurrentWidget(self.mapper_screen)
-        self.mapper_screen.set_arguments([file])
+        self.mapper_screen.set_arguments([file, directory])
 
     def load_library(self, arguments):
         self.central_widget.setCurrentWidget(self.mapper_screen)

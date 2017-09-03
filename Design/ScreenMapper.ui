@@ -50,9 +50,9 @@
      </widget>
     </item>
     <item row="6" column="1">
-     <widget class="QPushButton" name="finish_bt">
+     <widget class="QPushButton" name="change_name_bt">
       <property name="text">
-       <string>Finish</string>
+       <string>Change library name</string>
       </property>
      </widget>
     </item>
