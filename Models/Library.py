@@ -22,7 +22,7 @@ class Library(object):
                 file.write("import cv2\n")
             file.write("import pyocr\n")
             file.write("import pyocr.builders\n")
-            file.write("from PIL import Image\n")
+            file.write("from PIL import Image, ImageFilter\n")
             file.write("from mss import mss\n")
             file.write("\n\n")
             file.write("class {}(object):\n".format(name))
@@ -59,7 +59,13 @@ class Library(object):
                 if function.type == "string":
                     file.write("""        return self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.TextBuilder())\n""")
                 elif function.type == "number":
-                    file.write("""        return float(self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.TextBuilder()))\n""")
+                    file.write("        im = cropped.filter(ImageFilter.EDGE_ENHANCE_MORE)\n")
+                    file.write("        npcropped = numpy.array(im)[:, :, ::-1].copy()\n")
+                    file.write("        npcropped = cv2.resize(npcropped, (0,0), fx=3, fy=3)\n")
+                    file.write("        im = Image.fromarray(npcropped)\n")
+                    file.write("        im = im.convert('L')\n")
+                    file.write("        im = im.point(lambda x: 0 if x<100 else 255, '1')\n")
+                    file.write("""        return float(self.tool.image_to_string(im, lang="eng", builder=pyocr.builders.TextBuilder()))\n""")
                 elif function.type == "position":
                     file.write("""        image = cv2.("{}")\n""".format(function.image))
                     file.write("        cropped = numpy.array(cropped)[:, :, ::-1].copy()\n")
