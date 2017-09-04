@@ -1,6 +1,6 @@
 import os
 import cv2
-
+import sys
 
 from ImageViewerQt import ImageViewerQt
 from FunctionDialog import FunctionDialog
@@ -9,7 +9,7 @@ from Models.Library import Library
 from os import listdir
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 qtViewFile = "./Design/ScreenMapper.ui"  # Enter file here.
 
@@ -37,6 +37,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.save_image_bt.clicked.connect(self.save_image)
         self.add_function_bt.clicked.connect(self.add_function)
         self.delete_bt.clicked.connect(self.delete_function)
+        self.run_bt.clicked.connect(self.run_function)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
         self.box_function_lw.itemSelectionChanged.connect(self.show_box)
 
@@ -73,7 +74,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.box_functions = functions
         for fun in functions:
             self.box_function_lw.addItem("{}({})".format(fun.name, fun.type))
-        files = listdir(self.folder)
+        files = [file for file in listdir(self.folder) if file[-4:] == ".png"]
         self.screens_cb.clear()
         self.screens_cb.addItems(files)
         self.screens_cb.setCurrentIndex(0)
@@ -132,6 +133,25 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.box_function_lw.takeItem(index)
         del self.box_functions[index]
         Library.create_library(self.library, self.box, self.folder, self.box_functions)
+
+    def run_function(self):
+        index = self.box_function_lw.currentRow()
+        if index > -1:
+            lib = os.path.basename(os.path.normpath(self.library))
+            print("sys.path.append('{}')\n"
+                  "from {} import {} as testlib\n"
+                  "print('library imported')\n"
+                  "library = testlib()\n"
+                  "print(library.{}())".format(self.library[:-len(lib)], lib[:-3], lib[:-3],  self.box_functions[index].name)
+                  )
+            exec("sys.path.append('{}')\n"
+                  "from {} import {} as testlib\n"
+                  "print('library imported')\n"
+                  "library = testlib()\n"
+                  "result = library.{}()\n"
+                 "QMessageBox.about(self, 'Run function', 'Function {} from class {} returns '+str(result))".format(
+                self.library[:-len(lib)], lib[:-3], lib[:-3],  self.box_functions[index].name, self.box_functions[index].name, lib)
+                  )
 
     def show_box(self):
         box = self.box_functions[self.box_function_lw.currentRow()].box
