@@ -16,36 +16,37 @@ class FunctionDialog(QtWidgets.QDialog):
         self.filter_chb.setEnabled(False)
         self.threshold_hs.setEnabled(False)
         self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(False)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).clicked.connect(self.get_function)
         self.function_type.buttonClicked.connect(self.function_selected)
-        self.show_filter_bt.clicked.connect(self.show_filter)
+        self.threshold_hs.valueChanged.connect(self.show_filter)
         self.box = box
         self.folder = folder
         self.curren_view = current_view
         self.image_view = ImageViewerQt()
-        self.main_gl.addWidget(self.image_view, 7, 3, 2, 1)
-        self.show()
+        self.main_gl.addWidget(self.image_view, 7, 2, 2, 1)
 
-    @staticmethod
-    def get_function(box, current_view, folder):
-        print ("returning name")
-        dialog = FunctionDialog(box, folder, current_view)
-        text = dialog.get_radio_button()
+    def get_function(self):
+        text = self.get_radio_button()
         box_function = None
+        if self.filter_chb.isChecked():
+            threshold_value = self.threshold_hs.value()
+        else:
+            threshold_value = None
+
         if text == "Match img([] of x, y)":
             image, _ = QFileDialog.getOpenFileName(
-                dialog,
+                self,
                 "Select file of image that you want to map",
-                folder+"/Images",
+                self.folder+"/Images",
                 "Image Files (*.png)"
             )
-            print("returning: "+text+ "  with image: "+image)
-            box_function = BoxFunction(dialog.name_le.text(), "position", box, image=image)
+            box_function = BoxFunction(self.name_le.text(), "position", self.box, image=image)
         elif text == "Click()":
-            box_function = BoxFunction(dialog.name_le.text(), "click", box)
+            box_function = BoxFunction(self.name_le.text(), "click", self.box)
         elif text == "Get number(float)":
-            box_function = BoxFunction(dialog.name_le.text(), "number", box)
+            box_function = BoxFunction(self.name_le.text(), "number", self.box, threshold=threshold_value)
         elif text == "Get string(string)":
-            box_function = BoxFunction(dialog.name_le.text(), "string", box)
+            box_function = BoxFunction(self.name_le.text(), "string", self.box, threshold=threshold_value)
         return box_function
 
     def show_filter(self):

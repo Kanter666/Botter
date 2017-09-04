@@ -122,10 +122,14 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         box = self.image_view.getBoxDimensions()
 
         if box:
-            function_box = FunctionDialog.get_function(box, (self.folder+"/"+self.screens_cb.currentText()), self.folder)
-            self.box_functions.append(function_box)
-            self.box_function_lw.addItem("{}({})".format(function_box.name, function_box.type))
-            Library.create_library(self.library, self.box, self.folder, self.box_functions)
+            dialog = FunctionDialog(box, self.folder, (self.folder+"/"+self.screens_cb.currentText()))
+            dialog.exec_()
+            if dialog.result() == 0:
+                function_box = dialog.get_function()
+                print("got function")
+                self.box_functions.append(function_box)
+                self.box_function_lw.addItem("{}({})".format(function_box.name, function_box.type))
+                Library.create_library(self.library, self.box, self.folder, self.box_functions)
 
     def delete_function(self):
         index = self.box_function_lw.currentRow()
