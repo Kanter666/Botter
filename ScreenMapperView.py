@@ -123,8 +123,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
 
         if box:
             dialog = FunctionDialog(box, self.folder, (self.folder+"/"+self.screens_cb.currentText()))
-            dialog.exec_()
-            if dialog.result() == 0:
+            if dialog.exec_():
                 function_box = dialog.get_function()
                 print("got function")
                 self.box_functions.append(function_box)

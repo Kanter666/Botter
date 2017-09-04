@@ -47,6 +47,7 @@ class FunctionDialog(QtWidgets.QDialog):
             box_function = BoxFunction(self.name_le.text(), "number", self.box, threshold=threshold_value)
         elif text == "Get string(string)":
             box_function = BoxFunction(self.name_le.text(), "string", self.box, threshold=threshold_value)
+        self.done(1)
         return box_function
 
     def show_filter(self):
