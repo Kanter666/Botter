@@ -17,7 +17,7 @@ class FunctionDialog(QtWidgets.QDialog):
         result = dialog.exec_()
         text = dialog.get_radio_button()
         box_function = None
-        if text == "Is image in box?(bool)" or text =="Get position of image(x,y)":
+        if text == "Match img([] of x, y)":
             image, _ = QFileDialog.getOpenFileName(
                 dialog,
                 "Select file of image that you want to map",
@@ -25,10 +25,9 @@ class FunctionDialog(QtWidgets.QDialog):
                 "Image Files (*.png)"
             )
             print("returning: "+text+ "  with image: "+image)
-            if text == "Is image in box?(bool)":
-                box_function = BoxFunction(dialog.name_le.text(), "is_there", box, image=image)
-            else:
-                box_function = BoxFunction(dialog.name_le.text(), "position", box, image=image)
+            box_function = BoxFunction(dialog.name_le.text(), "position", box, image=image)
+        elif text == "Click()":
+            box_function = BoxFunction(dialog.name_le.text(), "click", box)
         elif text == "Get number(float)":
             box_function = BoxFunction(dialog.name_le.text(), "number", box)
         elif text == "Get string(string)":

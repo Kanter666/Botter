@@ -34,7 +34,7 @@
     <rect>
      <x>-1</x>
      <y>-1</y>
-     <width>403</width>
+     <width>433</width>
      <height>241</height>
     </rect>
    </property>
@@ -62,7 +62,7 @@
     <item row="3" column="1">
      <widget class="QRadioButton" name="position_rb">
       <property name="text">
-       <string>Get position of image(x,y)</string>
+       <string>Match img([] of x, y)</string>
       </property>
       <attribute name="buttonGroup">
        <string notr="true">function_type</string>
@@ -77,9 +77,9 @@
      </widget>
     </item>
     <item row="3" column="0">
-     <widget class="QRadioButton" name="bool_rb">
+     <widget class="QRadioButton" name="click_rb">
       <property name="text">
-       <string>Is image in box?(bool)</string>
+       <string>Click()</string>
       </property>
       <attribute name="buttonGroup">
        <string notr="true">function_type</string>
