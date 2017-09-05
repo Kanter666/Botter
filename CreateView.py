@@ -70,8 +70,6 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def onclicked_analyse(self):
         print("analyse")
-        print(self.keyboard_chb.isChecked())
-        print(self.mouse_chb.isChecked())
         self.clicked_analyse.emit(["Sending message", 5])
 
     def full_screen_radb(self):

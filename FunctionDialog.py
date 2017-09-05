@@ -40,13 +40,13 @@ class FunctionDialog(QtWidgets.QDialog):
                 self.folder+"/Images",
                 "Image Files (*.png)"
             )
-            box_function = BoxFunction(self.name_le.text(), "position", self.box, image=image)
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "position", self.box, image=image)
         elif text == "Click()":
-            box_function = BoxFunction(self.name_le.text(), "click", self.box)
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "click", self.box)
         elif text == "Get number(float)":
-            box_function = BoxFunction(self.name_le.text(), "number", self.box, threshold=threshold_value)
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "number", self.box, threshold=threshold_value)
         elif text == "Get string(string)":
-            box_function = BoxFunction(self.name_le.text(), "string", self.box, threshold=threshold_value)
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "string", self.box, threshold=threshold_value)
         self.done(1)
         return box_function
 

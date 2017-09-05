@@ -24,14 +24,14 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="9" column="0">
+     <item row="8" column="0">
       <widget class="QPushButton" name="start_rec_bt">
        <property name="text">
         <string>Start recording screen</string>
        </property>
       </widget>
      </item>
-     <item row="9" column="1">
+     <item row="8" column="1">
       <widget class="QPushButton" name="stop_rec_bt">
        <property name="text">
         <string>Stop recording screen</string>
@@ -88,7 +88,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Botter - Library creator</string>
+        <string>Botter - Record gamescreen</string>
        </property>
        <property name="textFormat">
         <enum>Qt::AutoText</enum>
@@ -98,34 +98,6 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Game control:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QCheckBox" name="keyboard_chb">
-         <property name="text">
-          <string>keyboard</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="mouse_chb">
-         <property name="text">
-          <string>mouse</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
      <item row="2" column="0">
       <widget class="Line" name="line">
        <property name="orientation">
@@ -133,24 +105,10 @@
        </property>
       </widget>
      </item>
-     <item row="10" column="1">
-      <widget class="QPushButton" name="analyse_rec_bt">
-       <property name="text">
-        <string>Analyse recorded game</string>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="0">
+     <item row="9" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Size of recorded information: 0</string>
-       </property>
-      </widget>
-     </item>
-     <item row="12" column="0" colspan="2">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Save library</string>
        </property>
       </widget>
      </item>
@@ -188,6 +146,13 @@
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0" colspan="2">
+      <widget class="QPushButton" name="analyse_rec_bt">
+       <property name="text">
+        <string>Analyse recorded game (create library)</string>
        </property>
       </widget>
      </item>

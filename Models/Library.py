@@ -15,7 +15,8 @@ class Library(object):
 
     @staticmethod
     def create_library(destination, screen_box, directory, functions):
-        name = os.path.basename(os.path.normpath(destination))[:-3]
+        name = os.path.basename(os.path.normpath(destination))[:-3].replace(" ", "_")
+        destination = destination[:-(len(name)+3)]+name+".py"
         with open(destination, 'w') as file:
             file.write("import random\n"
                        "import numpy\n"
