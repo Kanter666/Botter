@@ -148,13 +148,18 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
                   "print(library.{}())".format(self.library[:-len(lib)], lib[:-3], lib[:-3],  self.box_functions[index].name)
                   )
             exec("sys.path.append('{}')\n"
-                  "from {} import {} as testlib\n"
-                  "print('library imported')\n"
-                  "library = testlib()\n"
-                  "result = library.{}()\n"
+                 "from {} import {} as testlib\n"
+                 "print('library imported')\n"
+                 "library = testlib()\n"
+                 "library.grab_file('{}')\n"
+                 "result = library.{}()\n"
                  "QMessageBox.about(self, 'Run function', 'Function {} from class {} returns '+str(result))".format(
-                self.library[:-len(lib)], lib[:-3], lib[:-3],  self.box_functions[index].name, self.box_functions[index].name, lib)
-                  )
+                    self.library[:-len(lib)],
+                    lib[:-3], lib[:-3],
+                    (self.folder+"/"+self.screens_cb.currentText()),
+                    self.box_functions[index].name,
+                    self.box_functions[index].name, lib)
+                    )
 
     def show_box(self):
         box = self.box_functions[self.box_function_lw.currentRow()].box
@@ -167,6 +172,8 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
             self.folder,
             "Python Files (*.py)"
         )
+        if directory[-3:] != ".py":
+            directory += ".py"
         if os.path.exists(self.library):
             os.remove(self.library)
         self.library = directory

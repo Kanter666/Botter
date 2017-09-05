@@ -15,8 +15,8 @@ class Library(object):
 
     @staticmethod
     def create_library(destination, screen_box, directory, functions):
-        name = os.path.basename(os.path.normpath(destination))
-        with open(destination+".py", 'w') as file:
+        name = os.path.basename(os.path.normpath(destination))[:-3]
+        with open(destination, 'w') as file:
             file.write("import random\n"
                        "import numpy\n"
                        "import cv2\n"
@@ -47,6 +47,8 @@ class Library(object):
             file.write("        self.img = Image.frombytes('RGB', img.size, img.rgb)\n"
                        "        return self.img\n")
             file.write("\n")
+            file.write("    def grab_file(self, file):\n"
+                       "        self.img = Image.open(file)\n")
             for function in functions:
                 file.write("    def {}(self):\n"
                            "# f BoxFunction('{}', '{}', {}, {}, {})\n".format(

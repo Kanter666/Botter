@@ -37,6 +37,8 @@ class MainWindow(QtWidgets.QMainWindow):
             ".",
             "Python Files (*.py)"
         )
+        if directory[-3:] != ".py":
+            directory += ".py"
         self.central_widget.setCurrentWidget(self.mapper_screen)
         self.mapper_screen.set_arguments([file, directory])
 
