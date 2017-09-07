@@ -50,6 +50,12 @@ class Library(object):
             file.write("\n")
             file.write("    def grab_file(self, file):\n"
                        "        self.img = Image.open(file)\n")
+            file.write("\n")
+            file.write("    def write_text(self, text):\n"
+                       "        pyautogui.typewrite(text)\n")
+            file.write("\n")
+            file.write("    def press_button(self, text):\n"
+                       "        pyautogui.press(text)\n")
             for function in functions:
                 file.write("    def {}(self):\n"
                            "# f BoxFunction('{}', '{}', {}, {}, {})\n".format(
