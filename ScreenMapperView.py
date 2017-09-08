@@ -38,6 +38,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.add_function_bt.clicked.connect(self.add_function)
         self.delete_bt.clicked.connect(self.delete_function)
         self.run_bt.clicked.connect(self.run_function)
+        self.switch_game_bt.clicked.connect(self.switch_function)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
         self.box_function_lw.itemSelectionChanged.connect(self.show_box)
 
@@ -160,6 +161,17 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
                     self.box_functions[index].name,
                     self.box_functions[index].name, lib)
                     )
+
+    def switch_function(self):
+
+        self.folder = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
+        files = [file for file in listdir(self.folder) if file[-4:] == ".png"]
+        self.screens_cb.clear()
+        self.screens_cb.addItems(files)
+        self.screens_cb.setCurrentIndex(0)
+        if os.path.isfile(self.folder + "/box.txt"):
+            with open(self.folder + "/box.txt", 'r') as f:
+                self.box = eval(f.readline())
 
     def show_box(self):
         box = self.box_functions[self.box_function_lw.currentRow()].box
