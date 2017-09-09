@@ -16,6 +16,23 @@ qtViewFile = "./Design/ScreenMapper.ui"  # Enter file here.
 Ui_StartWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 
 
+class QCustomQWidget (QtWidgets.QWidget):
+    def __init__ (self, parent=None):
+        super(QCustomQWidget, self).__init__(parent)
+        self.name_l = QtWidgets.QLabel()
+        self.allQHBoxLayout = QtWidgets.QHBoxLayout()
+        self.edit_bt = QtWidgets.QPushButton("edit")
+        self.edit_bt.clicked.connect(parent.show_box)
+        self.delete_bt = QtWidgets.QPushButton("delete")
+        self.allQHBoxLayout.addWidget(self.name_l, 0)
+        self.allQHBoxLayout.addWidget(self.edit_bt, 1)
+        self.allQHBoxLayout.addWidget(self.delete_bt, 2)
+        self.setLayout(self.allQHBoxLayout)
+
+    def setName(self, text):
+        self.name_l.setText(text)
+
+
 class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
 
     clicked_cancel = pyqtSignal()
@@ -33,12 +50,12 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.box = None
 
         self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
-        self.change_name_bt.clicked.connect(self.change_name)
-        self.save_image_bt.clicked.connect(self.save_image)
-        self.add_function_bt.clicked.connect(self.add_function)
-        self.delete_bt.clicked.connect(self.delete_function)
-        self.run_bt.clicked.connect(self.run_function)
-        self.switch_game_bt.clicked.connect(self.switch_function)
+        self.change_name_bt.clicked.connect(self.change_name_press)
+        self.save_image_bt.clicked.connect(self.save_image_press)
+        self.add_function_bt.clicked.connect(self.add_function_press)
+        self.delete_bt.clicked.connect(self.delete_function_press)
+        self.run_bt.clicked.connect(self.run_function_press)
+        self.switch_game_bt.clicked.connect(self.switch_function_press)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
         self.box_function_lw.itemSelectionChanged.connect(self.show_box)
 
@@ -74,7 +91,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.library = arguments[1]
         self.box_functions = functions
         for fun in functions:
-            self.box_function_lw.addItem("{}({})".format(fun.name, fun.type))
+            self.add_function(fun)
         files = [file for file in listdir(self.folder) if file[-4:] == ".png"]
         self.screens_cb.clear()
         self.screens_cb.addItems(files)
@@ -101,7 +118,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
             if self.screens_cb.currentIndex() < (self.screens_cb.count() - 1):
                 self.screens_cb.setCurrentIndex(self.screens_cb.currentIndex() + 1)
 
-    def save_image(self):
+    def save_image_press(self):
 
         box = self.image_view.getBoxDimensions()
         img = cv2.imread(self.folder+"/"+self.screens_cb.currentText())
@@ -119,26 +136,38 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         )
         cv2.imwrite(directory+".png", imCrop)
 
-    def add_function(self):
+    def add_function_press(self):
         box = self.image_view.getBoxDimensions()
 
         if box:
             dialog = FunctionDialog(box, self.folder, (self.folder+"/"+self.screens_cb.currentText()))
             if dialog.exec_():
                 function_box = dialog.get_function()
-                print("got function")
                 self.box_functions.append(function_box)
-                self.box_function_lw.addItem("{}({})".format(function_box.name, function_box.type))
+                self.add_function(function_box)
                 Library.create_library(self.library, self.box, self.folder, self.box_functions)
 
-    def delete_function(self):
+    def add_function(self, function):
+
+        # Create QCustomQWidget
+        myQCustomQWidget = QCustomQWidget(self)
+        myQCustomQWidget.setName("{}({})".format(function.name, function.type))
+        # Create QListWidgetItem
+        myQListWidgetItem = QtWidgets.QListWidgetItem(self.box_function_lw)
+        # Set size hintItem(myQListWidgetItem)
+        myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
+        # Add QListWidgetItem into QListWidget
+        self.box_function_lw.addItem(myQListWidgetItem)
+        self.box_function_lw.setItemWidget(myQListWidgetItem, myQCustomQWidget)
+
+    def delete_function_press(self):
         index = self.box_function_lw.currentRow()
         print("Current inde is {}, and name of the function should be: {}".format(index, self.box_functions[index].name))
         self.box_function_lw.takeItem(index)
         del self.box_functions[index]
         Library.create_library(self.library, self.box, self.folder, self.box_functions)
 
-    def run_function(self):
+    def run_function_press(self):
         index = self.box_function_lw.currentRow()
         if index > -1:
             lib = os.path.basename(os.path.normpath(self.library))
@@ -162,7 +191,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
                     self.box_functions[index].name, lib)
                     )
 
-    def switch_function(self):
+    def switch_function_press(self):
 
         self.folder = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         files = [file for file in listdir(self.folder) if file[-4:] == ".png"]
@@ -177,7 +206,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         box = self.box_functions[self.box_function_lw.currentRow()].box
         self.image_view.show_selected_box(box)
 
-    def change_name(self):
+    def change_name_press(self):
         directory, _ = QFileDialog.getSaveFileName(
             self,
             "Create library file",
