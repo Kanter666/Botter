@@ -19,18 +19,33 @@ Ui_StartWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 class QCustomQWidget (QtWidgets.QWidget):
     def __init__ (self, parent=None):
         super(QCustomQWidget, self).__init__(parent)
+        self.parent = parent
+        self.qlist_widget = None
         self.name_l = QtWidgets.QLabel()
         self.allQHBoxLayout = QtWidgets.QHBoxLayout()
+        self.run_bt = QtWidgets.QPushButton("run")
         self.edit_bt = QtWidgets.QPushButton("edit")
-        self.edit_bt.clicked.connect(parent.show_box)
         self.delete_bt = QtWidgets.QPushButton("delete")
+        self.run_bt.clicked.connect(self.set_selected)
+        self.edit_bt.clicked.connect(self.set_selected)
+        self.delete_bt.clicked.connect(self.set_selected)
+        self.run_bt.clicked.connect(self.parent.run_function_press)
+        self.edit_bt.clicked.connect(self.set_selected)
+        self.delete_bt.clicked.connect(self.parent.delete_function_press)
         self.allQHBoxLayout.addWidget(self.name_l, 0)
+        self.allQHBoxLayout.addWidget(self.run_bt, 1)
         self.allQHBoxLayout.addWidget(self.edit_bt, 1)
-        self.allQHBoxLayout.addWidget(self.delete_bt, 2)
+        self.allQHBoxLayout.addWidget(self.delete_bt, 1)
         self.setLayout(self.allQHBoxLayout)
 
     def setName(self, text):
         self.name_l.setText(text)
+
+    def set_widget(self, widget):
+        self.qlist_widget = widget
+
+    def set_selected(self):
+        self.parent.box_function_lw.setCurrentRow(self.parent.box_function_lw.indexFromItem(self.qlist_widget).row())
 
 
 class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
@@ -156,6 +171,9 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         myQListWidgetItem = QtWidgets.QListWidgetItem(self.box_function_lw)
         # Set size hintItem(myQListWidgetItem)
         myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
+
+        myQCustomQWidget.set_widget(myQListWidgetItem)
+
         # Add QListWidgetItem into QListWidget
         self.box_function_lw.addItem(myQListWidgetItem)
         self.box_function_lw.setItemWidget(myQListWidgetItem, myQCustomQWidget)
