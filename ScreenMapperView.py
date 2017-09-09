@@ -68,11 +68,11 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.change_name_bt.clicked.connect(self.change_name_press)
         self.save_image_bt.clicked.connect(self.save_image_press)
         self.add_function_bt.clicked.connect(self.add_function_press)
-        self.delete_bt.clicked.connect(self.delete_function_press)
-        self.run_bt.clicked.connect(self.run_function_press)
         self.switch_game_bt.clicked.connect(self.switch_function_press)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
         self.box_function_lw.itemSelectionChanged.connect(self.show_box)
+
+        self.name_l.setFont(QtGui.QFont("Times", weight=QtGui.QFont.Bold))
 
         self.image_view = ImageViewerQt()
         self.grid_layout.addWidget(self.image_view, 0, 0, 10, 1)
@@ -104,6 +104,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
     def set_arguments(self, arguments, functions=[]):
         self.folder = arguments[0]
         self.library = arguments[1]
+        self.name_l.setText(self.library)
         self.box_functions = functions
         for fun in functions:
             self.add_function(fun)
@@ -236,5 +237,6 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         if os.path.exists(self.library):
             os.remove(self.library)
         self.library = directory
+        self.name_l.setText(self.library)
         Library.create_library(self.library, self.box, self.folder, self.box_functions)
 
