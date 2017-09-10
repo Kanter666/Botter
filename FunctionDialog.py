@@ -16,7 +16,7 @@ class FunctionDialog(QtWidgets.QDialog):
         self.filter_chb.setEnabled(False)
         self.threshold_hs.setEnabled(False)
         self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(False)
-        self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).clicked.connect(self.get_function)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).clicked.connect(lambda: self.done(1))
         self.function_type.buttonClicked.connect(self.function_selected)
         self.threshold_hs.valueChanged.connect(self.show_filter)
         self.box = box
@@ -32,7 +32,6 @@ class FunctionDialog(QtWidgets.QDialog):
             threshold_value = self.threshold_hs.value()
         else:
             threshold_value = None
-
         if text == "Match img([] of x, y)":
             image, _ = QFileDialog.getOpenFileName(
                 self,
@@ -47,7 +46,7 @@ class FunctionDialog(QtWidgets.QDialog):
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "number", self.box, threshold=threshold_value)
         elif text == "Get string(string)":
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "string", self.box, threshold=threshold_value)
-        self.done(1)
+
         return box_function
 
     def show_filter(self):

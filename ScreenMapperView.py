@@ -22,7 +22,7 @@ class QCustomQWidget (QtWidgets.QWidget):
         self.parent = parent
         self.qlist_widget = None
         self.name_l = QtWidgets.QLabel()
-        self.allQHBoxLayout = QtWidgets.QHBoxLayout()
+        self.all_layout = QtWidgets.QGridLayout()
         self.run_bt = QtWidgets.QPushButton("run")
         self.edit_bt = QtWidgets.QPushButton("edit")
         self.delete_bt = QtWidgets.QPushButton("delete")
@@ -32,11 +32,12 @@ class QCustomQWidget (QtWidgets.QWidget):
         self.run_bt.clicked.connect(self.parent.run_function_press)
         self.edit_bt.clicked.connect(self.set_selected)
         self.delete_bt.clicked.connect(self.parent.delete_function_press)
-        self.allQHBoxLayout.addWidget(self.name_l, 0)
-        self.allQHBoxLayout.addWidget(self.run_bt, 1)
-        self.allQHBoxLayout.addWidget(self.edit_bt, 1)
-        self.allQHBoxLayout.addWidget(self.delete_bt, 1)
-        self.setLayout(self.allQHBoxLayout)
+        self.all_layout.addWidget(self.name_l, 0, 0, 1, 3)
+        self.all_layout.addWidget(self.run_bt, 0, 3)
+        self.all_layout.addWidget(self.edit_bt, 0, 4)
+        self.all_layout.addWidget(self.delete_bt, 0, 5)
+
+        self.setLayout(self.all_layout)
 
     def setName(self, text):
         self.name_l.setText(text)
@@ -75,7 +76,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.name_l.setFont(QtGui.QFont("Times", weight=QtGui.QFont.Bold))
 
         self.image_view = ImageViewerQt()
-        self.grid_layout.addWidget(self.image_view, 0, 0, 10, 1)
+        self.grid_layout.addWidget(self.image_view, 0, 0, 35, 1)
 
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         QtWidgets.qApp.installEventFilter(self)

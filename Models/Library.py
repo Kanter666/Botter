@@ -58,7 +58,7 @@ class Library(object):
                        "        pyautogui.press(text)\n")
             for function in functions:
                 file.write("    def {}(self):\n"
-                           "# f BoxFunction('{}', '{}', {}, {}, {})\n".format(
+                           "# f BoxFunction('{}', '{}', {}, '{}', {})\n".format(
                     function.name,
                     function.name, function.type, function.box, function.image, function.threshold
                 )
@@ -86,11 +86,11 @@ class Library(object):
                     elif function.type == "number":
                         file.write("""        return float(self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.DigitBuilder()))\n""")
                     elif function.type == "position":
-                        file.write("""        image = cv2.("{}")\n""".format(function.image))
+                        file.write("""        image = cv2.imread("{}")\n""".format(function.image))
                         file.write("        cropped = numpy.array(cropped)[:, :, ::-1].copy()\n")
                         file.write("        res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n")
                         file.write("        threshold = 0.8\n")
-                        file.write("        loc = np.where( res >= threshold)\n")
+                        file.write("        loc = numpy.where( res >= threshold)\n")
                         file.write("        return loc\n")
                 file.write("\n")
 
