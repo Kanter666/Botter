@@ -40,7 +40,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
         self.capture_screen = True
         speed = self.frequency_spin_box.value()
         if speed <= 0:
-            speed = 30
+            speed = 200
 
         time_folder = datetime.now().strftime('%m%d_%H:%M:%S')
 
@@ -51,16 +51,21 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
         _thread.start_new_thread(self.record_screen, (time_folder, speed))
 
     def record_screen(self, time_folder, speed):
+        counter = 0
+
+        speed = 1./speed
 
         if isinstance(self.box, int):
             while self.capture_screen:
-                self.sct.shot(mon=0, output="./" + time_folder + "/" + str(time.time()) + ".png")
-                time.sleep(1./speed)
+                self.sct.shot(mon=0, output="./" + time_folder + "/" + str(counter) + ".png")
+                time.sleep(speed)
+                counter += 1
         else:
             while self.capture_screen:
                 sct_img = self.sct.grab(self.box)
-                mss.tools.to_png(sct_img.rgb, sct_img.size, output="./" + time_folder + "/" + str(time.time()) + ".png")
-                time.sleep(1. / speed)
+                mss.tools.to_png(sct_img.rgb, sct_img.size, output="./" + time_folder + "/" + str(counter) + ".png")
+                time.sleep(speed)
+                counter += 1
             with open("./" + time_folder + "/box.txt", 'w') as file:
                 file.write("{}\n".format(self.box))
 
