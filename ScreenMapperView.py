@@ -69,11 +69,12 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.box_functions = []
         self.box = None
 
+        self.rename_lib_ml.triggered.connect(self.change_name_press)
+        self.screenshots_folder_ml.triggered.connect(self.switch_function_press)
+
         self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
-        self.change_name_bt.clicked.connect(self.change_name_press)
         self.save_image_bt.clicked.connect(self.save_image_press)
         self.add_function_bt.clicked.connect(self.add_function_press)
-        self.switch_game_bt.clicked.connect(self.switch_function_press)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
         self.box_function_lw.itemSelectionChanged.connect(self.show_box)
 
