@@ -9,14 +9,14 @@ from PyQt5 import uic, QtWidgets
 from PyQt5.QtCore import pyqtSignal
 from datetime import datetime
 
-qtViewFile = "./Design/Create.ui"  # Enter file here.
+qtViewFile = "./Design/Record.ui"  # Enter file here.
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 
 
 class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
-    clicked_analyse = pyqtSignal(list)
+    clicked_analyse = pyqtSignal()
 
     def __init__(self):
         self.box = 0
@@ -69,13 +69,14 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
             with open("./" + time_folder + "/box.txt", 'w') as file:
                 file.write("{}\n".format(self.box))
 
+        self.number_of_img_l.setText("Number of screenshots: {}".format(counter))
+
     def onclicked_stop(self):
         self.capture_screen = False
         print("stop")
 
     def onclicked_analyse(self):
-        print("analyse")
-        self.clicked_analyse.emit(["Sending message", 5])
+        self.clicked_analyse.emit()
 
     def full_screen_radb(self):
         if self.fullsc_radb.isChecked():

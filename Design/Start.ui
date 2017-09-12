@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>656</width>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,13 +16,19 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>69</x>
-     <y>29</y>
-     <width>431</width>
-     <height>241</height>
+     <x>0</x>
+     <y>0</y>
+     <width>651</width>
+     <height>371</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>40</number>
+    </property>
+    <property name="rightMargin">
+     <number>40</number>
+    </property>
     <item>
      <widget class="QLabel" name="label">
       <property name="font">
@@ -46,22 +52,41 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QPushButton" name="load_library_bt">
-        <property name="text">
-         <string>Load old library</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="create_library_bt">
-        <property name="text">
-         <string>Create new library</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QPushButton" name="load_library_bt">
+      <property name="text">
+       <string>Load old library</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="create_library_bt">
+      <property name="text">
+       <string>Create new library with recorded game</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="record_game_bt">
+      <property name="text">
+       <string>Record new example game</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>8</width>
+        <height>50</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>

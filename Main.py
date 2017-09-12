@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5 import QtWidgets
-from CreateView import CreateView
+from RecordView import CreateView
 from StartView import StartView
 from ScreenMapperView import ScreenMapperView
 
@@ -17,19 +17,20 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.central_widget)
         self.resize(640, 480)
         self.start_screen = StartView()
-        self.create_screen = CreateView()
+        self.record_screen = CreateView()
         self.mapper_screen = ScreenMapperView()
         self.central_widget.addWidget(self.start_screen)
-        self.central_widget.addWidget(self.create_screen)
+        self.central_widget.addWidget(self.record_screen)
         self.central_widget.addWidget(self.mapper_screen)
         self.central_widget.setCurrentWidget(self.start_screen)
 
-        self.start_screen.clicked_create.connect(lambda: self.central_widget.setCurrentWidget(self.create_screen))
+        self.start_screen.clicked_record.connect(lambda: self.central_widget.setCurrentWidget(self.record_screen))
+        self.start_screen.clicked_create.connect(self.open_mapper)
         self.start_screen.clicked_load.connect(self.load_library)
-        self.create_screen.clicked_analyse.connect(self.openMapper)
+        self.record_screen.clicked_analyse.connect(self.open_mapper)
         self.mapper_screen.clicked_cancel.connect(lambda: self.central_widget.setCurrentWidget(self.start_screen))
 
-    def openMapper(self, arguments):
+    def open_mapper(self):
         file = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory with your screen recording"))
         directory, _ = QtWidgets.QFileDialog.getSaveFileName(
             self,

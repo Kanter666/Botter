@@ -10,8 +10,10 @@ Ui_StartWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 
 class StartView(QtWidgets.QMainWindow, Ui_StartWindow):
 
+    clicked_record = pyqtSignal()
     clicked_create = pyqtSignal()
     clicked_load = pyqtSignal(list)
+
     def __init__(self):
         self.box = 0
 
@@ -20,11 +22,10 @@ class StartView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.setupUi(self)
 
         self.load_library_bt.clicked.connect(self.onclicked_load)
-
         self.create_library_bt.clicked.connect(self.clicked_create.emit)
+        self.record_game_bt.clicked.connect(self.clicked_record.emit)
 
     def onclicked_load(self):
-        print("load")
         library, _ = QFileDialog.getOpenFileName(
             self,
             "Select file of library that you want to load",
