@@ -34,7 +34,7 @@ class QCustomQWidget (QtWidgets.QWidget):
         self.edit_bt.clicked.connect(self.set_selected)
         self.delete_bt.clicked.connect(self.set_selected)
         self.run_bt.clicked.connect(self.parent.run_function_press)
-        self.edit_bt.clicked.connect(self.set_selected)
+        self.edit_bt.clicked.connect(self.parent.edit_function_press)
         self.delete_bt.clicked.connect(self.parent.delete_function_press)
         self.all_layout.addWidget(self.name_l, 70)
         self.all_layout.addWidget(self.run_bt, 10)
@@ -167,6 +167,18 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
                 self.box_functions.append(function_box)
                 self.add_function(function_box)
                 Library.create_library(self.library, self.box, self.folder, self.box_functions)
+
+    def edit_function_press(self):
+
+        index = self.box_function_lw.currentRow()
+        box = self.box_functions[index].box
+
+        dialog = FunctionDialog(box, self.folder, (self.folder+"/"+self.screens_cb.currentText()), function=self.box_functions[index])
+        if dialog.exec_():
+            function_box = dialog.get_function()
+            self.box_functions.append(function_box)
+            self.add_function(function_box)
+            Library.create_library(self.library, self.box, self.folder, self.box_functions)
 
     def add_function(self, function):
 

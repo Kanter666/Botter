@@ -10,7 +10,7 @@ from PIL.ImageQt import ImageQt
 
 
 class FunctionDialog(QtWidgets.QDialog):
-    def __init__(self, box, folder, current_view):
+    def __init__(self, box, folder, current_view, function=None):
         super(FunctionDialog, self).__init__()
         uic.loadUi('./Design/BoxDialog.ui', self)
         self.filter_chb.setEnabled(False)
@@ -24,6 +24,11 @@ class FunctionDialog(QtWidgets.QDialog):
         self.curren_view = current_view
         self.image_view = ImageViewerQt()
         self.main_gl.addWidget(self.image_view, 7, 2, 2, 1)
+        if function:
+            self.name_le.setText(function.name)
+            exec("self.{}_rb.setChecked(True)\n"
+                 "self.function_selected(self.{}_rb)".format(function.type, function.type))
+
 
     def get_function(self):
         text = self.get_radio_button()
