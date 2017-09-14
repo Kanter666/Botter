@@ -19,11 +19,25 @@
      <rect>
       <x>30</x>
       <y>40</y>
-      <width>501</width>
+      <width>522</width>
       <height>341</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="11" column="0">
+      <widget class="QPushButton" name="cancel_bt">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="QPushButton" name="analyse_rec_bt">
+       <property name="text">
+        <string>Analyse recorded game (create library)</string>
+       </property>
+      </widget>
+     </item>
      <item row="8" column="0">
       <widget class="QPushButton" name="start_rec_bt">
        <property name="text">
@@ -98,13 +112,6 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="Line" name="line">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
      <item row="9" column="0">
       <widget class="QLabel" name="number_of_img_l">
        <property name="text">
@@ -125,13 +132,6 @@
      <item row="4" column="1">
       <widget class="QDoubleSpinBox" name="frequency_spin_box"/>
      </item>
-     <item row="11" column="0">
-      <widget class="Line" name="line_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="0" colspan="2">
       <widget class="QLabel" name="label_3">
        <property name="font">
@@ -149,10 +149,17 @@
        </property>
       </widget>
      </item>
-     <item row="12" column="0" colspan="2">
-      <widget class="QPushButton" name="analyse_rec_bt">
-       <property name="text">
-        <string>Analyse recorded game (create library)</string>
+     <item row="2" column="0" colspan="2">
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0" colspan="2">
+      <widget class="Line" name="line_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>

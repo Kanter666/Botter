@@ -17,6 +17,7 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     clicked_analyse = pyqtSignal()
+    clicked_cancel = pyqtSignal()
 
     def __init__(self):
         self.box = 0
@@ -30,6 +31,7 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
         self.start_rec_bt.clicked.connect(self.onclicked_start)
         self.analyse_rec_bt.clicked.connect(self.onclicked_analyse)
         self.stop_rec_bt.clicked.connect(self.onclicked_stop)
+        self.cancel_bt.clicked.connect(self.clicked_cancel.emit)
 
         self.fullsc_radb.setChecked(True)
         self.fullsc_radb.toggled.connect(self.full_screen_radb)

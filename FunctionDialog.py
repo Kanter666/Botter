@@ -15,7 +15,7 @@ class FunctionDialog(QtWidgets.QDialog):
         uic.loadUi('./Design/BoxDialog.ui', self)
         self.filter_chb.setEnabled(False)
         self.threshold_hs.setEnabled(False)
-        self.match_image_te.setEnabled(False)
+        self.match_img_le.setEnabled(False)
         self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(False)
         self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).clicked.connect(lambda: self.done(1))
         self.function_type.buttonClicked.connect(self.function_selected)
@@ -25,15 +25,15 @@ class FunctionDialog(QtWidgets.QDialog):
         self.match = None
         self.curren_view = current_view
         self.image_view = ImageViewerQt()
-        self.match_image_te.mousePressEvent = self.get_match_image
-        self.main_gl.addWidget(self.image_view, 8, 2, 2, 1)
+        self.match_img_le.mousePressEvent = self.get_match_image
+        self.main_gl.addWidget(self.image_view, 7, 1, 2, 2)
         if function:
             self.name_le.setText(function.name)
             exec("self.{}_rb.setChecked(True)\n"
                  "self.function_selected(self.{}_rb)".format(function.type, function.type))
             if function.image:
                 self.match = function.image
-                self.match_image_te.setText(self.match)
+                self.match_img_le.setText(self.match)
 
     def get_function(self):
         text = self.get_radio_button()
@@ -43,8 +43,7 @@ class FunctionDialog(QtWidgets.QDialog):
         else:
             threshold_value = None
         if text == "Match img([] of x, y)":
-                QMessageBox.about(self, "Error", "Match function needs image to match, please select image first.")
-
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "position", self.box, image=self.match)
         elif text == "Click()":
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "click", self.box)
         elif text == "Get number(float)":
@@ -62,7 +61,7 @@ class FunctionDialog(QtWidgets.QDialog):
             "Image Files (*.png)"
         )
         self.match = image
-        self.match_image_te.setText()
+        self.match_img_le.setText(image)
         self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(True)
 
     def show_filter(self):
@@ -91,12 +90,12 @@ class FunctionDialog(QtWidgets.QDialog):
             self.filter_chb.setEnabled(False)
             self.threshold_hs.setEnabled(False)
             if text == "Match img([] of x, y)":
-                self.match_image_te.setEnabled(True)
+                self.match_img_le.setEnabled(True)
                 self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(False)
             else:
-                self.match_image_te.setEnabled(False)
+                self.match_img_le.setEnabled(False)
 
         elif text == "Get number(float)" or text == "Get string(string)":
             self.filter_chb.setEnabled(True)
             self.threshold_hs.setEnabled(True)
-            self.match_image_te.setEnabled(False)
+            self.match_img_le.setEnabled(False)

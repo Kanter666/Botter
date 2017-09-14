@@ -177,6 +177,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         dialog = FunctionDialog(box, self.folder, (self.folder+"/"+self.screens_cb.currentText()), function=self.box_functions[index])
         if dialog.exec_():
             function_box = dialog.get_function()
+            self.delete_function_press()
             self.box_functions.append(function_box)
             self.add_function(function_box)
             Library.create_library(self.library, self.box, self.folder, self.box_functions)

@@ -29,6 +29,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.start_screen.clicked_load.connect(self.load_library)
         self.record_screen.clicked_analyse.connect(self.open_mapper)
         self.mapper_screen.clicked_cancel.connect(lambda: self.central_widget.setCurrentWidget(self.start_screen))
+        self.record_screen.clicked_cancel.connect(lambda: self.central_widget.setCurrentWidget(self.start_screen))
 
     def open_mapper(self):
         file = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory with your screen recording"))
@@ -44,6 +45,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mapper_screen.set_arguments([file, directory])
 
     def load_library(self, arguments):
+        self.mapper_screen = ScreenMapperView()
+        self.central_widget.addWidget(self.mapper_screen)
         self.central_widget.setCurrentWidget(self.mapper_screen)
         self.mapper_screen.set_arguments([arguments[0], arguments[1]], functions=arguments[2])
 
