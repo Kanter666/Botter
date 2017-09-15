@@ -1,6 +1,7 @@
 import os
 import cv2
 import sys
+import importlib
 
 from ImageViewerQt import ImageViewerQt
 from FunctionDialog import FunctionDialog
@@ -210,20 +211,29 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         if index > -1:
             lib = os.path.basename(os.path.normpath(self.library))
             print("sys.path.append('{}')\n"
-                  "from {} import {} as testlib\n"
-                  "print('library imported')\n"
-                  "library = testlib()\n"
-                  "print(library.{}())".format(self.library[:-len(lib)], lib[:-3], lib[:-3],  self.box_functions[index].name)
-                  )
-            exec("sys.path.append('{}')\n"
-                 "from {} import {} as testlib\n"
+                 "import {}\n"
+                 "importlib.reload({})\n"
                  "print('library imported')\n"
-                 "library = testlib()\n"
+                 "library = {}.{}()\n"
                  "library.grab_file('{}')\n"
                  "result = library.{}()\n"
                  "QMessageBox.about(self, 'Run function', 'Function {} from class {} returns '+str(result))".format(
                     self.library[:-len(lib)],
-                    lib[:-3], lib[:-3],
+                    lib[:-3], lib[:-3], lib[:-3], lib[:-3],
+                    (self.folder+"/"+self.screens_cb.currentText()),
+                    self.box_functions[index].name,
+                    self.box_functions[index].name, lib)
+                    )
+            exec("sys.path.append('{}')\n"
+                 "import {}\n"
+                 "importlib.reload({})\n"
+                 "print('library imported')\n"
+                 "library = {}.{}()\n"
+                 "library.grab_file('{}')\n"
+                 "result = library.{}()\n"
+                 "QMessageBox.about(self, 'Run function', 'Function {} from class {} returns '+str(result))".format(
+                    self.library[:-len(lib)],
+                    lib[:-3], lib[:-3], lib[:-3], lib[:-3],
                     (self.folder+"/"+self.screens_cb.currentText()),
                     self.box_functions[index].name,
                     self.box_functions[index].name, lib)
