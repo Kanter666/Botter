@@ -68,6 +68,8 @@ class FunctionDialog(QtWidgets.QDialog):
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "number", self.box, threshold=threshold_value)
         elif text == "Get string(string)":
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "string", self.box, threshold=threshold_value)
+        elif text == "Has changed(bool)":
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "change", self.box)
 
         return box_function
 

@@ -38,6 +38,14 @@ class Library(object):
                        """            sys.exit(1)\n"""
                        """        self.tool = tools[0]\n"""
                        """        print("Will use tool '%s'" % (self.tool.get_name()))\n""".format(name, screen_box, directory))
+            for function in functions:
+                if function.type == "change":
+                    file.write("        self.grab_screen()\n"
+                               "        self.{}_img = self.img.crop([{}, {}, {}, {}])\n".format
+                    (
+                        function.name, int(function.box[0]), int(function.box[1]),
+                        int(function.box[0] + function.box[2]), int(function.box[1] + function.box[3])
+                    ))
             file.write("\n")
             file.write("    def grab_screen(self):\n"
                        "        with mss() as sct:\n")
@@ -92,6 +100,12 @@ class Library(object):
                                    "        threshold = {}\n"
                                    "        loc = numpy.where( res >= threshold)\n"
                                    "        return loc\n".format(function.image, function.match_threshold))
+                    elif function.type == "change":
+                        file.write("        if self.{}_img == cropped:\n"
+                                   "            return False\n"
+                                   "        else:\n"
+                                   "            self.{}_img = cropped\n"
+                                   "            return True\n".format(function.name, function.name))
                 file.write("\n")
 
             file.write("\n")

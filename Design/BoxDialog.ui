@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>464</width>
-    <height>362</height>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,17 +23,10 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="main_gl">
-    <item row="1" column="0" colspan="3">
-     <widget class="Line" name="line_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QRadioButton" name="number_rb">
+    <item row="3" column="1" colspan="2">
+     <widget class="QRadioButton" name="string_rb">
       <property name="text">
-       <string>Get number(float)</string>
+       <string>Get string(string)</string>
       </property>
       <attribute name="buttonGroup">
        <string notr="true">function_type</string>
@@ -47,14 +40,21 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1" colspan="2">
-     <widget class="QRadioButton" name="string_rb">
+    <item row="3" column="0">
+     <widget class="QRadioButton" name="number_rb">
       <property name="text">
-       <string>Get string(string)</string>
+       <string>Get number(float)</string>
       </property>
       <attribute name="buttonGroup">
        <string notr="true">function_type</string>
       </attribute>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="3">
+     <widget class="Line" name="line_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
      </widget>
     </item>
     <item row="4" column="1" colspan="2">
@@ -67,6 +67,13 @@
       </attribute>
      </widget>
     </item>
+    <item row="7" column="0" colspan="3">
+     <layout class="QVBoxLayout" name="additional_bl">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+     </layout>
+    </item>
     <item row="4" column="0">
      <widget class="QRadioButton" name="click_rb">
       <property name="text">
@@ -77,14 +84,7 @@
       </attribute>
      </widget>
     </item>
-    <item row="5" column="0" colspan="3">
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="1" colspan="2">
+    <item row="9" column="1" colspan="2">
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -101,7 +101,7 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="0" colspan="3">
+    <item row="8" column="0" colspan="3">
      <widget class="Line" name="line_3">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -109,11 +109,21 @@
      </widget>
     </item>
     <item row="6" column="0" colspan="3">
-     <layout class="QVBoxLayout" name="additional_bl">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetMinimumSize</enum>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
-     </layout>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QRadioButton" name="changed_rb">
+      <property name="text">
+       <string>Has changed(bool)</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">function_type</string>
+      </attribute>
+     </widget>
     </item>
    </layout>
   </widget>
