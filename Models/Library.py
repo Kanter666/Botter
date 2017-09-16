@@ -66,9 +66,9 @@ class Library(object):
                        "        pyautogui.press(text)\n")
             for function in functions:
                 file.write("    def {}(self):\n"
-                           "# f BoxFunction('{}', '{}', {}, '{}', {}, {})\n".format(
+                           "# f BoxFunction('{}', '{}', {}, {})\n".format(
                     function.name,
-                    function.name, function.type, function.box, function.image, function.threshold, function.match_threshold
+                    function.name, function.type, function.box, function.dictionary
                 )
                 )
                 if function.type == "click":
@@ -82,13 +82,13 @@ class Library(object):
                         int(function.box[1] + function.box[3])
                     )
                     )
-                    if function.threshold is not None:
+                    if "threshold" in function.dictionary.keys():
                         file.write("        im = cropped.filter(ImageFilter.EDGE_ENHANCE_MORE)\n"
                                    "        npcropped = numpy.array(im)[:, :, ::-1].copy()\n"
                                    "        npcropped = cv2.resize(npcropped, (0,0), fx=3, fy=3)\n"
                                    "        im = Image.fromarray(npcropped)\n"
                                    "        im = im.convert('L')\n"
-                                   "        cropped = im.point(lambda x: 0 if x<{} else 255, '1')\n".format(function.threshold))
+                                   "        cropped = im.point(lambda x: 0 if x<{} else 255, '1')\n".format(function.dictionary["threshold"]))
                     if function.type == "string":
                         file.write("""        return self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.TextBuilder())\n""")
                     elif function.type == "number":
@@ -99,7 +99,7 @@ class Library(object):
                                    "        res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
                                    "        threshold = {}\n"
                                    "        loc = numpy.where( res >= threshold)\n"
-                                   "        return loc\n".format(function.image, function.match_threshold))
+                                   "        return loc\n".format(function.dictionary["image"], function.dictionary["match_threshold"]))
                     elif function.type == "change":
                         file.write("        if self.{}_img == cropped:\n"
                                    "            return False\n"

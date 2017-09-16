@@ -40,12 +40,12 @@ class FunctionDialog(QtWidgets.QDialog):
         self.match_img_widget.hide()
         if function:
             self.name_le.setText(function.name)
-            if function.image:
-                self.match = function.image
+            if "image" in function.dictionary:
+                self.match = function.dictionary["image"]
                 self.match_img_widget.match_img_le.setText(self.match)
-                self.match_img_widget.match_threshold_hs.setValue(function.match_threshold)
-            elif function.threshold:
-                self.get_text_widget.threshold_hs.setValue(function.threshold)
+                self.match_img_widget.match_threshold_hs.setValue(function.dictionary["match_threshold"])
+            elif "threshold" in function.dictionary:
+                self.get_text_widget.threshold_hs.setValue(function.dictionary["threshold"])
 
             exec("self.{}_rb.setChecked(True)\n"
                  "self.function_selected(self.{}_rb)".format(function.type, function.type))
@@ -58,16 +58,16 @@ class FunctionDialog(QtWidgets.QDialog):
         else:
             threshold_value = None
         if text == "Match img([] of x, y)":
-            box_function = BoxFunction(self.name_le.text().replace(" ", "_"),
-                                       "position", self.box, image=self.match,
-                                       match_threshold=self.match_img_widget.match_threshold_hs.value()
-                                       )
+            box_function = BoxFunction(
+                self.name_le.text().replace(" ", "_"), "position", self.box,
+                {"image": self.match, "match_threshold": self.match_img_widget.match_threshold_hs.value()}
+                )
         elif text == "Click()":
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "click", self.box)
         elif text == "Get number(float)":
-            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "number", self.box, threshold=threshold_value)
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "number", self.box, {"threshold": threshold_value})
         elif text == "Get string(string)":
-            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "string", self.box, threshold=threshold_value)
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "string", self.box, {"threshold": threshold_value})
         elif text == "Has changed(bool)":
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "change", self.box)
 
