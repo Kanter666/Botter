@@ -8,6 +8,7 @@ qtViewFile = "./Design/Start.ui"  # Enter file here.
 
 Ui_StartWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 
+
 class StartView(QtWidgets.QMainWindow, Ui_StartWindow):
 
     clicked_record = pyqtSignal()

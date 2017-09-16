@@ -19,6 +19,11 @@ class FunctionDialog(QtWidgets.QDialog):
         self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).clicked.connect(lambda: self.done(1))
         self.function_type.buttonClicked.connect(self.function_selected)
         self.get_text_widget.threshold_hs.valueChanged.connect(self.show_filter)
+        self.match_img_widget.match_threshold_hs.valueChanged.connect(
+            lambda: self.match_img_widget.threshold_lb.setText(
+                "Match threshold : {} % ".format(self.match_img_widget.match_threshold_hs.value())
+            )
+        )
         self.box = box
         self.folder = folder
         self.match = None
@@ -35,21 +40,28 @@ class FunctionDialog(QtWidgets.QDialog):
         self.match_img_widget.hide()
         if function:
             self.name_le.setText(function.name)
-            exec("self.{}_rb.setChecked(True)\n"
-                 "self.function_selected(self.{}_rb)".format(function.type, function.type))
             if function.image:
                 self.match = function.image
-                self.match_img_le.match_img_widget.setText(self.match)
+                self.match_img_widget.match_img_le.setText(self.match)
+                self.match_img_widget.match_threshold_hs.setValue(function.match_threshold)
+            elif function.threshold:
+                self.get_text_widget.threshold_hs.setValue(function.threshold)
+
+            exec("self.{}_rb.setChecked(True)\n"
+                 "self.function_selected(self.{}_rb)".format(function.type, function.type))
 
     def get_function(self):
         text = self.get_radio_button()
         box_function = None
-        if self.filter_chb.isChecked():
-            threshold_value = self.threshold_hs.value()
+        if self.get_text_widget.filter_chb.isChecked():
+            threshold_value = self.get_text_widget.threshold_hs.value()
         else:
             threshold_value = None
         if text == "Match img([] of x, y)":
-            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "position", self.box, image=self.match)
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"),
+                                       "position", self.box, image=self.match,
+                                       match_threshold=self.match_img_widget.match_threshold_hs.value()
+                                       )
         elif text == "Click()":
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "click", self.box)
         elif text == "Get number(float)":
@@ -95,7 +107,8 @@ class FunctionDialog(QtWidgets.QDialog):
         self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(True)
         text = btn.text()
         if text == "Match img([] of x, y)":
-            self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(False)
+            if not self.match_img_widget.match_img_le.text():
+                self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(False)
             self.match_img_widget.show()
 
         elif text == "Get number(float)" or text == "Get string(string)":
