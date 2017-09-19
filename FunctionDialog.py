@@ -60,14 +60,22 @@ class FunctionDialog(QtWidgets.QDialog):
         if text == "Match img([] of x, y)":
             box_function = BoxFunction(
                 self.name_le.text().replace(" ", "_"), "position", self.box,
-                {"image": self.match, "match_threshold": self.match_img_widget.match_threshold_hs.value()}
+                {
+                    "image": self.match,
+                    "match_threshold": self.match_img_widget.match_threshold_hs.value(),
+                    "rotate": self.match_img_widget.rotate_chb.isChecked()
+                }
                 )
         elif text == "Click()":
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "click", self.box)
         elif text == "Get number(float)":
-            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "number", self.box, {"threshold": threshold_value})
+            box_function = BoxFunction(
+                self.name_le.text().replace(" ", "_"), "number", self.box, {"threshold": threshold_value}
+            )
         elif text == "Get string(string)":
-            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "string", self.box, {"threshold": threshold_value})
+            box_function = BoxFunction(
+                self.name_le.text().replace(" ", "_"), "string", self.box, {"threshold": threshold_value}
+            )
         elif text == "Has changed(bool)":
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "change", self.box)
 
