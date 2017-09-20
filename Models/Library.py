@@ -37,7 +37,8 @@ class Library(object):
                        """            print('No OCR tool found')\n"""
                        """            sys.exit(1)\n"""
                        """        self.tool = tools[0]\n"""
-                       """        print("Will use tool '%s'" % (self.tool.get_name()))\n""".format(name, screen_box, directory))
+                       """        self.screen_box = {}\n"""
+                       """        print("Will use tool '%s'" % (self.tool.get_name()))\n""".format(name, screen_box, directory, screen_box))
             for function in functions:
                 if function.type == "change":
                     file.write("        self.grab_screen()\n"
@@ -50,7 +51,7 @@ class Library(object):
             file.write("    def grab_screen(self):\n"
                        "        with mss() as sct:\n")
             if screen_box:
-                file.write("            img = sct.grab({})\n".format(screen_box))
+                file.write("            img = sct.grab(self.screen_box)\n")
             else:
                 file.write("            img = sct.shot()\n")
             file.write("        self.img = Image.frombytes('RGB', img.size, img.rgb)\n"
@@ -102,7 +103,7 @@ class Library(object):
                             function.dictionary["image"], function.dictionary["match_threshold"]
                             )
                         )
-                        if function.dictionary["rotate"]:
+                        if "rotate" in function.dictionary and function.dictionary["rotate"]:
                             file.write("        for angle in [90, 180, 270]:"
                                        "            if len(loc[0])>"
                                        "            image = numpy.array(Image.open('{}').rotate(angle).convert('RGB'))[:, :, ::-1].copy() \n"

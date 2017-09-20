@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>614</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -39,40 +39,7 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <item row="11" column="2">
-     <widget class="QComboBox" name="screens_cb"/>
-    </item>
-    <item row="24" column="2">
-     <widget class="QPushButton" name="cancel_bt">
-      <property name="text">
-       <string>Cancel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="1">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Screen number:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <spacer name="verticalSpacer_3">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Minimum</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="19" column="1" colspan="2">
+    <item row="18" column="1" colspan="2">
      <widget class="QListWidget" name="box_function_lw">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
@@ -81,43 +48,6 @@
        </sizepolicy>
       </property>
      </widget>
-    </item>
-    <item row="20" column="1">
-     <widget class="QPushButton" name="add_function_bt">
-      <property name="text">
-       <string>Add function for box</string>
-      </property>
-     </widget>
-    </item>
-    <item row="18" column="1" colspan="2">
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>Functions except from default grab_screen() and write_text():</string>
-      </property>
-     </widget>
-    </item>
-    <item row="20" column="2">
-     <widget class="QPushButton" name="save_image_bt">
-      <property name="text">
-       <string>Save selected area to png</string>
-      </property>
-     </widget>
-    </item>
-    <item row="13" column="1">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Minimum</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>10</height>
-       </size>
-      </property>
-     </spacer>
     </item>
     <item row="14" column="1" colspan="2">
      <widget class="Line" name="line">
@@ -152,6 +82,66 @@
       </property>
      </spacer>
     </item>
+    <item row="23" column="2">
+     <widget class="QPushButton" name="cancel_bt">
+      <property name="text">
+       <string>Cancel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="1" colspan="2">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;User guide:&lt;/p&gt;&lt;p&gt;Python library is result of this program. Aim is to make creation of bots easy and fast. Library contains default and created functions, all created functions use last screenshot. Default functions are used for common tasks - such as taking screenshots, or typing with keyboard.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Default functions:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;grab_screen() - takes screenshot, crops game window and saves to var&lt;/p&gt;&lt;p&gt;grab_file(file) - loads file as screenshot&lt;/p&gt;&lt;p&gt;write_text(text) - instantly types text string&lt;/p&gt;&lt;p&gt;press_button(button) - press of button - can be ENTER, SPACE, a, b, ....&lt;br/&gt;&lt;/p&gt;&lt;p&gt;User functions:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="19" column="2">
+     <widget class="QPushButton" name="save_image_bt">
+      <property name="text">
+       <string>Save selected area to png</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="1">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Minimum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>10</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="11" column="1">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Screen number:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <spacer name="verticalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Minimum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
     <item row="5" column="1">
      <spacer name="verticalSpacer_4">
       <property name="orientation">
@@ -167,6 +157,9 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="11" column="2">
+     <widget class="QComboBox" name="screens_cb"/>
     </item>
     <item row="4" column="1" colspan="2">
      <widget class="Line" name="line_3">
@@ -188,6 +181,20 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="19" column="1">
+     <widget class="QPushButton" name="add_function_bt">
+      <property name="text">
+       <string>Add function for box</string>
+      </property>
+     </widget>
+    </item>
+    <item row="20" column="1">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Locate game screen by saved picture with position:</string>
       </property>
      </widget>
     </item>
