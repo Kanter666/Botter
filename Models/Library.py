@@ -14,7 +14,7 @@ class Library(object):
         self.functions = functions
 
     @staticmethod
-    def create_library(destination, screen_box, directory, functions):
+    def create_library(destination, screen_box, directory, functions, dict):
         name = os.path.basename(os.path.normpath(destination))[:-3].replace(" ", "_")
         destination = destination[:-(len(name)+3)]+name+".py"
         with open(destination, 'w') as file:
@@ -55,16 +55,22 @@ class Library(object):
             else:
                 file.write("            img = sct.shot()\n")
             file.write("        self.img = Image.frombytes('RGB', img.size, img.rgb)\n"
-                       "        return self.img\n")
-            file.write("\n")
+                       "        return self.img\n"
+                       "\n")
             file.write("    def grab_file(self, file):\n"
-                       "        self.img = Image.open(file)\n")
-            file.write("\n")
+                       "        self.img = Image.open(file)\n"
+                       "\n")
             file.write("    def write_text(self, text):\n"
-                       "        pyautogui.typewrite(text)\n")
-            file.write("\n")
+                       "        pyautogui.typewrite(text)\n"
+                       "\n")
             file.write("    def press_button(self, text):\n"
-                       "        pyautogui.press(text)\n")
+                       "        pyautogui.press(text)\n"
+                       "\n")
+            if "position_image" in dict and dict["position_image"]:
+                file.write("    def locate_screen(self):\n"
+                           "        \n"
+                           "\n")
+
             for function in functions:
                 file.write("    def {}(self):\n"
                            "# f BoxFunction('{}', '{}', {}, {})\n".format(

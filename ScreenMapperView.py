@@ -69,6 +69,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
 
         self.box_functions = []
         self.box = None
+        self.position_img = None
 
         self.rename_lib_ml.triggered.connect(self.change_name_press)
         self.screenshots_folder_ml.triggered.connect(self.switch_function_press)
@@ -78,6 +79,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         self.add_function_bt.clicked.connect(self.add_function_press)
         self.screens_cb.currentIndexChanged.connect(self.screen_changed)
         self.box_function_lw.itemSelectionChanged.connect(self.show_box)
+        self.position_img_bt.clicked.connect(self.position_from_image)
 
         self.name_l.setFont(QtGui.QFont("Times", weight=QtGui.QFont.Bold))
 
@@ -112,6 +114,10 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
     def set_arguments(self, arguments, functions=[]):
         self.folder = arguments[0]
         self.library = arguments[1]
+        if len(arguments) > 2:
+            if "position_image" in arguments[2]:
+                self.position_img = arguments[2]["position_image"]
+                self.position_img_bt.setText("Position image is set")
         self.name_l.setText(self.library)
         self.box_functions = functions
         for fun in functions:
@@ -142,6 +148,21 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
             if self.screens_cb.currentIndex() < (self.screens_cb.count() - 1):
                 self.screens_cb.setCurrentIndex(self.screens_cb.currentIndex() + 1)
 
+    def position_from_image(self):
+            box = self.image_view.getBoxDimensions()
+            img = cv2.imread(self.folder + "/" + self.screens_cb.currentText())
+
+            imCrop = img[int(box[1]):int(box[1] + box[3]), int(box[0]):int(box[0] + box[2])]
+
+            if not os.path.exists(self.folder + "/Images"):
+                os.makedirs(self.folder + "/Images")
+
+            cv2.imwrite(self.folder+"/Images/position_img.png", imCrop)
+            self.position_img = [int(box[0]),int(box[1])]
+            self.position_img_lb.setText("Position image is set")
+
+            self.create_lib()
+
     def save_image_press(self):
 
         box = self.image_view.getBoxDimensions()
@@ -169,20 +190,22 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
                 function_box = dialog.get_function()
                 self.box_functions.append(function_box)
                 self.add_function(function_box)
-                Library.create_library(self.library, self.box, self.folder, self.box_functions)
+                self.create_lib()
 
     def edit_function_press(self):
 
         index = self.box_function_lw.currentRow()
         box = self.box_functions[index].box
 
-        dialog = FunctionDialog(box, self.folder, (self.folder+"/"+self.screens_cb.currentText()), function=self.box_functions[index])
+        dialog = FunctionDialog(
+            box, self.folder, (self.folder+"/"+self.screens_cb.currentText()), function=self.box_functions[index]
+        )
         if dialog.exec_():
             function_box = dialog.get_function()
             self.delete_function_press()
             self.box_functions.append(function_box)
             self.add_function(function_box)
-            Library.create_library(self.library, self.box, self.folder, self.box_functions)
+            self.create_lib()
 
     def add_function(self, function):
 
@@ -205,7 +228,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         print("Current inde is {}, and name of the function should be: {}".format(index, self.box_functions[index].name))
         self.box_function_lw.takeItem(index)
         del self.box_functions[index]
-        Library.create_library(self.library, self.box, self.folder, self.box_functions)
+        self.create_lib()
 
     def run_function_press(self):
         index = self.box_function_lw.currentRow()
@@ -268,5 +291,14 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
             os.remove(self.library)
         self.library = directory
         self.name_l.setText(self.library)
-        Library.create_library(self.library, self.box, self.folder, self.box_functions)
+        self.create_lib()
+
+    def create_lib(self):
+        Library.create_library(
+            self.library,
+            self.box,
+            self.folder,
+            self.box_functions,
+            {"position_image": self.position_img}
+        )
 
