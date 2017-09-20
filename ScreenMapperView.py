@@ -12,7 +12,7 @@ from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
-qtViewFile = "./Design/ScreenMapper.ui"  # Enter file here.
+qtViewFile = "./Design/ScreenMapper.ui"
 
 Ui_StartWindow, QtBaseClass = uic.loadUiType(qtViewFile)
 
@@ -83,6 +83,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
 
         self.image_view = ImageViewerQt()
         self.grid_layout.addWidget(self.image_view, 0, 0, 35, 1)
+        self.grid_layout.setColumnStretch(0, 99)
 
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         QtWidgets.qApp.installEventFilter(self)

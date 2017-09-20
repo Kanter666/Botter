@@ -44,31 +44,34 @@ class CreateView(QtWidgets.QMainWindow, Ui_MainWindow):
         if speed <= 0:
             speed = 200
 
-        time_folder = datetime.now().strftime('%m%d_%H:%M:%S')
+        if self.name_lb.text() != "":
+            folder_name = self.name_lb.text()
+        else:
+            folder_name = datetime.now().strftime('%m%d_%H:%M:%S')
 
-        directory = "./" + time_folder
+        directory = "./" + folder_name
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-        _thread.start_new_thread(self.record_screen, (time_folder, speed))
+        _thread.start_new_thread(self.record_screen, (folder_name, speed))
 
-    def record_screen(self, time_folder, speed):
+    def record_screen(self, folder_name, speed):
         counter = 0
 
         speed = 1./speed
 
         if isinstance(self.box, int):
             while self.capture_screen:
-                self.sct.shot(mon=0, output="./" + time_folder + "/" + str(counter) + ".png")
+                self.sct.shot(mon=0, output="./" + folder_name + "/" + str(counter) + ".png")
                 time.sleep(speed)
                 counter += 1
         else:
             while self.capture_screen:
                 sct_img = self.sct.grab(self.box)
-                mss.tools.to_png(sct_img.rgb, sct_img.size, output="./" + time_folder + "/" + str(counter) + ".png")
+                mss.tools.to_png(sct_img.rgb, sct_img.size, output="./" + folder_name + "/" + str(counter) + ".png")
                 time.sleep(speed)
                 counter += 1
-            with open("./" + time_folder + "/box.txt", 'w') as file:
+            with open("./" + folder_name + "/box.txt", 'w') as file:
                 file.write("{}\n".format(self.box))
 
         self.number_of_img_l.setText("Number of screenshots: {}".format(counter))

@@ -15,7 +15,7 @@ class MainWindow(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self, parent)
         self.central_widget = QtWidgets.QStackedWidget()
         self.setCentralWidget(self.central_widget)
-        self.resize(640, 480)
+        self.resize(740, 500)
         self.start_screen = StartView()
         self.record_screen = CreateView()
         self.mapper_screen = ScreenMapperView()
