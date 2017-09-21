@@ -190,7 +190,7 @@
        <number>1</number>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Python library is automatically generated/updated. User needs to create&lt;br/&gt;a class object and call its functions. Users functions get data from last&lt;br/&gt;screenshot taken with grab_screen() or grab_file().&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Default functions:&lt;/span&gt;&lt;br/&gt;grab_screen() - takes screenshot, crops game window and saves to var&lt;br/&gt;grab_file(file) - loads file as screenshot&lt;br/&gt;write_text(text) - instantly types text string&lt;br/&gt;press_button(button) - press of button - can be ENTER, SPACE, a, b, ....&lt;br/&gt;&lt;br/&gt;User functions:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Python library is automatically generated/updated. User needs to create&lt;br/&gt;an object and call its functions - firstly grab_screen() to get data&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Default functions:&lt;/span&gt;&lt;br/&gt;grab_screen() - takes screenshot, crops game window and saves to var&lt;br/&gt;grab_file(file) - loads file as screenshot&lt;br/&gt;write_text(text) - instantly types text string&lt;br/&gt;press_button(button) - press of button - can be ENTER, SPACE, a, b, ....&lt;br/&gt;locate_screen() - optional function, will occur after you set position image&lt;br/&gt;&lt;/br&gt;User functions:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>

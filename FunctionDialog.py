@@ -119,20 +119,20 @@ class FunctionDialog(QtWidgets.QDialog):
         self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(True)
         text = btn.text()
         if text == "Match img([] of x, y)":
-            self.describtion_lb.setText("Matches image in box and then return positions of matches.")
+            self.description_lb.setText("Matches image in box and then return positions of matches.")
             if not self.match_img_widget.match_img_le.text():
                 self.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setEnabled(False)
             self.match_img_widget.show()
 
         elif text == "Get number(float)":
-            self.describtion_lb.setText("Gets number from box, returns error if there are non-numeric characters.")
+            self.description_lb.setText("Gets number from box, returns error if there are non-numeric characters.")
             self.get_text_widget.show()
         elif text == "Get string(string)":
-            self.describtion_lb.setText("Uses ocr to get string from box.")
+            self.description_lb.setText("Uses ocr to get string from box.")
             self.get_text_widget.show()
         elif text == "Has changed(bool)":
-            self.describtion_lb.setText("Checks if image in box differs from last call of this function.")
+            self.description_lb.setText("Checks if image in box differs from last call of this function.")
         elif text == "Click()":
-            self.describtion_lb.setText("Clicks in middle of selected box.")
+            self.description_lb.setText("Clicks in middle of selected box.")
         elif text == "Game box([x, y, width, height])":
-            self.describtion_lb.setText("Returns position and a size of game window. Sets box when run in botter.")
+            self.description_lb.setText("Returns position and a size of game window. Sets box when run in botter.")

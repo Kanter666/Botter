@@ -133,7 +133,7 @@
      </widget>
     </item>
     <item row="7" column="0" colspan="3">
-     <widget class="QLabel" name="describtion_lb">
+     <widget class="QLabel" name="description_lb">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -141,7 +141,7 @@
        </sizepolicy>
       </property>
       <property name="text">
-       <string>describtion</string>
+       <string>description</string>
       </property>
      </widget>
     </item>
