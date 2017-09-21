@@ -10,7 +10,8 @@ from Models.Library import Library
 from os import listdir
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QFileDialog, QMessageBox, QGraphicsRectItem
+
 
 qtViewFile = "./Design/ScreenMapper.ui"
 
@@ -233,35 +234,50 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
     def run_function_press(self):
         index = self.box_function_lw.currentRow()
         if index > -1:
+            function = self.box_functions[index]
             lib = os.path.basename(os.path.normpath(self.library))
-            print("sys.path.append('{}')\n"
-                 "import {}\n"
-                 "importlib.reload({})\n"
-                 "print('library imported')\n"
-                 "library = {}.{}()\n"
-                 "library.grab_file('{}')\n"
-                 "result = library.{}()\n"
-                 "QMessageBox.about(self, 'Run function', 'Function {} from class {} returns '+str(result))".format(
-                    self.library[:-len(lib)],
-                    lib[:-3], lib[:-3], lib[:-3], lib[:-3],
-                    (self.folder+"/"+self.screens_cb.currentText()),
-                    self.box_functions[index].name,
-                    self.box_functions[index].name, lib)
-                    )
-            exec("sys.path.append('{}')\n"
-                 "import {}\n"
-                 "importlib.reload({})\n"
-                 "print('library imported')\n"
-                 "library = {}.{}()\n"
-                 "library.grab_file('{}')\n"
-                 "result = library.{}()\n"
-                 "QMessageBox.about(self, 'Run function', 'Function {} from class {} returns '+str(result))".format(
-                    self.library[:-len(lib)],
-                    lib[:-3], lib[:-3], lib[:-3], lib[:-3],
-                    (self.folder+"/"+self.screens_cb.currentText()),
-                    self.box_functions[index].name,
-                    self.box_functions[index].name, lib)
-                    )
+
+            if function.type == "game_box":
+                if self.image_view.current_box:
+                    self.image_view.scene.removeItem(self.image_view.current_box)
+                self.image_view.box_dimension = function.box
+                self.image_view.current_box = QGraphicsRectItem(
+                    function.box[0], function.box[1], function.box[2], function.box[3]
+                )
+                self.image_view.current_box.setPen(self.image_view.box_style)
+                self.image_view.scene.addItem(self.image_view.current_box)
+
+            elif function.type == "change" or function.type == "click":
+                QMessageBox.about(self, 'Run function', 'Function {} from class {} can not be runned in this enviroment'.format(function.name, lib))
+            else:
+                print("sys.path.append('{}')\n"
+                     "import {}\n"
+                     "importlib.reload({})\n"
+                     "print('library imported')\n"
+                     "library = {}.{}()\n"
+                     "library.grab_file('{}')\n"
+                     "result = library.{}()\n"
+                     "QMessageBox.about(self, 'Run function', 'Function {} from class {} returns '+str(result))".format(
+                        self.library[:-len(lib)],
+                        lib[:-3], lib[:-3], lib[:-3], lib[:-3],
+                        (self.folder+"/"+self.screens_cb.currentText()),
+                        self.box_functions[index].name,
+                        self.box_functions[index].name, lib)
+                        )
+                exec("sys.path.append('{}')\n"
+                     "import {}\n"
+                     "importlib.reload({})\n"
+                     "print('library imported')\n"
+                     "library = {}.{}()\n"
+                     "library.grab_file('{}')\n"
+                     "result = library.{}()\n"
+                     "QMessageBox.about(self, 'Run function', 'Function {} from class {} returns '+str(result))".format(
+                        self.library[:-len(lib)],
+                        lib[:-3], lib[:-3], lib[:-3], lib[:-3],
+                        (self.folder+"/"+self.screens_cb.currentText()),
+                        self.box_functions[index].name,
+                        self.box_functions[index].name, lib)
+                        )
 
     def switch_function_press(self):
 
