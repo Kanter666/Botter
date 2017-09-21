@@ -56,7 +56,7 @@ class Library(object):
             if screen_box:
                 file.write("            img = sct.grab(self.screen_box)\n")
             else:
-                file.write("            img = sct.shot()\n")
+                file.write("            img = sct.grab(sct.monitors[0])\n")
             file.write("        self.img = Image.frombytes('RGB', img.size, img.rgb)\n"
                        "        return self.img\n"
                        "\n")
@@ -72,7 +72,9 @@ class Library(object):
             if "position_image" in dict and dict["position_image"]:
                 file.write("    def locate_screen(self):\n"
                            "        image = cv2.imread('{}/Images/position_img.png')\n"
-                           "        screen = sct.shot()\n"
+                           "        with mss() as sct:\n"
+                           "            screen = sct.grab(sct.monitors[0])\n"
+                           "        screen = Image.frombytes('RGB', screen.size, screen.rgb)\n"
                            "        cropped = numpy.array(screen)[:, :, ::-1].copy()\n"
                            "        res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
                            "        loc = numpy.where( res >= 80)\n"
@@ -103,7 +105,7 @@ class Library(object):
                         int(function.box[1] + function.box[3])
                     )
                     )
-                    if "threshold" in function.dictionary.keys():
+                    if "threshold" in function.dictionary.keys() and function.dictionary["threshold"]:
                         file.write("        im = cropped.filter(ImageFilter.EDGE_ENHANCE_MORE)\n"
                                    "        npcropped = numpy.array(im)[:, :, ::-1].copy()\n"
                                    "        npcropped = cv2.resize(npcropped, (0,0), fx=3, fy=3)\n"
