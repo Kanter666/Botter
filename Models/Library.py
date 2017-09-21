@@ -6,12 +6,13 @@ from Models.BoxFunction import BoxFunction
 
 class Library(object):
 
-    def __init__(self, destination, screen_box, directory, functions):
+    def __init__(self, destination, screen_box, directory, functions, dict):
 
         self.destination = destination
         self.screen_box = screen_box
         self.directory = directory
         self.functions = functions
+        self.dict = dict
 
     @staticmethod
     def create_library(destination, screen_box, directory, functions, dict):
@@ -28,7 +29,7 @@ class Library(object):
                        "from mss import mss\n")
             file.write("\n\n")
             file.write("""class {}(object):\n"""
-                       """# c {{'screen_box': {}, 'directory': '{}'}}\n"""
+                       """# c {{'screen_box': {}, 'directory': '{}', 'dict': {}}}\n"""
                        """\n"""
                        """    def __init__(self):\n"""
                        """        self.img = None\n"""
@@ -38,7 +39,9 @@ class Library(object):
                        """            sys.exit(1)\n"""
                        """        self.tool = tools[0]\n"""
                        """        self.screen_box = {}\n"""
-                       """        print("Will use tool '%s'" % (self.tool.get_name()))\n""".format(name, screen_box, directory, screen_box))
+                       """        print("Will use tool '%s'" % (self.tool.get_name()))\n""".format(
+                name, screen_box, directory, dict, screen_box
+            ))
             for function in functions:
                 if function.type == "change":
                     file.write("        self.grab_screen()\n"
@@ -68,8 +71,19 @@ class Library(object):
                        "\n")
             if "position_image" in dict and dict["position_image"]:
                 file.write("    def locate_screen(self):\n"
-                           "        \n"
-                           "\n")
+                           "        image = cv2.imread('{}/Images/position_img.png')\n"
+                           "        screen = sct.shot()\n"
+                           "        cropped = numpy.array(screen)[:, :, ::-1].copy()\n"
+                           "        res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
+                           "        loc = numpy.where( res >= 80)\n"
+                           "        if len(loc[0])>0:\n"
+                           "            self.screen_box['left']=loc[0][0]+{}\n"
+                           "            self.screen_box['left']=loc[1][0]+{}\n".format(
+                    directory,
+                    dict["position_image"][0],
+                    dict["position_image"][1]
+                )
+                )
 
             for function in functions:
                 file.write("    def {}(self):\n"
@@ -153,6 +167,7 @@ class Library(object):
                     if lines[i][:3] == "# c":
                         class_data = ast.literal_eval(lines[i][4:])
                         directory = class_data["directory"]
+                        dictionary = class_data["dict"]
                         print("Directory is {} . and we increased curent line to {}".format(directory, i))
                         i += 8
                     elif lines[i][:3] == "# f":
@@ -160,7 +175,7 @@ class Library(object):
                         i += 2
                 i += 1
 
-        return directory, functions
+        return directory, functions, dictionary
 
 
 

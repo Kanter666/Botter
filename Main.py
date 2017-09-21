@@ -48,7 +48,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mapper_screen = ScreenMapperView()
         self.central_widget.addWidget(self.mapper_screen)
         self.central_widget.setCurrentWidget(self.mapper_screen)
-        self.mapper_screen.set_arguments([arguments[0], arguments[1]], functions=arguments[2])
+        self.mapper_screen.set_arguments([arguments[0], arguments[1], arguments[3]], functions=arguments[2])
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
