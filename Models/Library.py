@@ -77,7 +77,7 @@ class Library(object):
                            "        screen = Image.frombytes('RGB', screen.size, screen.rgb)\n"
                            "        cropped = numpy.array(screen)[:, :, ::-1].copy()\n"
                            "        res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
-                           "        loc = numpy.where( res >= 80)\n"
+                           "        loc = numpy.where( res >= 0.8)\n"
                            "        if len(loc[0])>0:\n"
                            "            self.screen_box['left']=loc[0][0]+{}\n"
                            "            self.screen_box['left']=loc[1][0]+{}\n".format(
@@ -120,7 +120,7 @@ class Library(object):
                         file.write("        image = cv2.imread('{}')\n"
                                    "        cropped = numpy.array(cropped)[:, :, ::-1].copy()\n"
                                    "        res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
-                                   "        threshold = {}\n"
+                                   "        threshold = 0.{}\n"
                                    "        loc = numpy.where( res >= threshold)\n".format(
                             function.dictionary["image"], function.dictionary["match_threshold"]
                             )

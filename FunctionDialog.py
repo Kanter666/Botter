@@ -56,7 +56,7 @@ class FunctionDialog(QtWidgets.QDialog):
         if self.get_text_widget.filter_chb.isChecked():
             threshold_value = self.get_text_widget.threshold_hs.value()
         else:
-            threshold_value = None
+            threshold_value = 80
         if text == "Match img([] of x, y)":
             box_function = BoxFunction(
                 self.name_le.text().replace(" ", "_"), "position", self.box,
