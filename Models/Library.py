@@ -80,12 +80,8 @@ class Library(object):
                            "        loc = numpy.where( res >= 0.8)\n"
                            "        if len(loc[0])>0:\n"
                            "            self.screen_box['left']=loc[0][0]+{}\n"
-                           "            self.screen_box['left']=loc[1][0]+{}\n".format(
-                    directory,
-                    dict["position_image"][0],
-                    dict["position_image"][1]
-                )
-                )
+                           "            self.screen_box['left']=loc[1][0]+{}\n"
+                           "\n".format(directory, dict["position_image"][0], dict["position_image"][1]))
 
             for function in functions:
                 file.write("    def {}(self):\n"
@@ -98,6 +94,8 @@ class Library(object):
                     file.write(
                         """        pyautogui.click({}, {})\n""".format((int(screen_box["left"] + function.box[0] + function.box[2] / 2)),
                                                                        int(screen_box["top"] + function.box[1] + function.box[3] / 2)))
+                elif function.type == "game_box":
+                    file.write("""        return {}\n""".format(function.box))
                 else:
                     file.write("        cropped = self.img.crop([{}, {}, {}, {}])\n".format
                     (

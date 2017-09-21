@@ -78,6 +78,8 @@ class FunctionDialog(QtWidgets.QDialog):
             )
         elif text == "Has changed(bool)":
             box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "change", self.box)
+        elif text == "Game box([x, y, width, height])":
+            box_function = BoxFunction(self.name_le.text().replace(" ", "_"), "game_box", self.box)
 
         return box_function
 
@@ -132,3 +134,5 @@ class FunctionDialog(QtWidgets.QDialog):
             self.describtion_lb.setText("Checks if image in box differs from last call of this function.")
         elif text == "Click()":
             self.describtion_lb.setText("Clicks in middle of selected box.")
+        elif text == "Game box([x, y, width, height])":
+            self.describtion_lb.setText("Returns position and a size of game window. Sets box when run in botter.")
