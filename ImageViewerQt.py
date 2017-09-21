@@ -3,9 +3,9 @@
 """
 
 import os.path
-from PyQt5.QtCore import Qt, QRectF, pyqtSignal, QLineF
+from PyQt5.QtCore import Qt, QRectF, pyqtSignal
 from PyQt5.QtGui import QImage, QPixmap, QPainterPath, QPen
-from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QFileDialog, QGraphicsRectItem
+from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsRectItem
 
 
 __author__ = "Marcel Goldschen-Ohm <marcel.goldschen@gmail.com>"
@@ -185,23 +185,12 @@ class ImageViewerQt(QGraphicsView):
                 smallY = self.clickedY
             else:
                 smallY = event.pos().y()
-            if self.current_box:
-                self.scene.removeItem(self.current_box)
-            self.box_dimension = [
+            self.update_function_box([
                 self.mapToScene(smallX, smallY).x(),
                 self.mapToScene(smallX, smallY).y(),
                 self.zoom * abs(self.clickedX - event.pos().x()),
                 self.zoom * abs(self.clickedY - event.pos().y())
-            ]
-            self.current_box = QGraphicsRectItem(
-                self.box_dimension[0],
-                self.box_dimension[1],
-                self.box_dimension[2],
-                self.box_dimension[3]
-            )
-
-            self.current_box.setPen(self.box_style)
-            self.scene.addItem(self.current_box)
+            ])
         elif event.button() == Qt.RightButton:
             if self.canZoom:
                 viewBBox = self.zoomStack[-1] if len(self.zoomStack) else self.sceneRect()
@@ -212,6 +201,22 @@ class ImageViewerQt(QGraphicsView):
                     self.updateViewer()
             self.setDragMode(QGraphicsView.NoDrag)
             self.rightMouseButtonReleased.emit(scenePos.x(), scenePos.y())
+
+    def update_function_box(self, box):
+        if self.current_box:
+            self.scene.removeItem(self.current_box)
+        self.box_dimension = [
+            box[0], box[1], box[2], box[3]
+        ]
+        self.current_box = QGraphicsRectItem(
+            self.box_dimension[0],
+            self.box_dimension[1],
+            self.box_dimension[2],
+            self.box_dimension[3]
+        )
+
+        self.current_box.setPen(self.box_style)
+        self.scene.addItem(self.current_box)
 
     def show_selected_box(self, box):
         if self.selected_box:
