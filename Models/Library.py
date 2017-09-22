@@ -124,19 +124,17 @@ class Library(object):
                             )
                         )
                         if "rotate" in function.dictionary and function.dictionary["rotate"]:
-                            file.write("        for angle in [90, 180, 270]:"
-                                       "            if len(loc[0])>"
-                                       "            image = numpy.array(Image.open('{}').rotate(angle).convert('RGB'))[:, :, ::-1].copy() \n"
-                                       "            cropped = numpy.array(cropped)[:, :, ::-1].copy()\n"
+                            file.write("        for angle in [90, 180, 270]:\n"
+                                       "            if len(loc[0])>0:\n"
+                                       "                break\n"
+                                       "            image = numpy.array(Image.open('{}').rotate(angle).convert('RGB'))[:, :, ::-1].copy()\n"
                                        "            res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
-                                       "            threshold = {}\n"
+                                       "            threshold = 0.{}\n"
                                        "            loc = numpy.where( res >= threshold)\n".format(
                                 function.dictionary["image"], function.dictionary["match_threshold"]
                             )
                             )
-
-
-                        file.write("        return loc\n")
+                        file.write("        return loc\n\n")
                     elif function.type == "change":
                         file.write("        if self.{}_img == cropped:\n"
                                    "            return False\n"
