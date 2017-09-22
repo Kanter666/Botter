@@ -126,6 +126,7 @@ class ScreenMapperView(QtWidgets.QMainWindow, Ui_StartWindow):
         files = [file for file in listdir(self.folder) if file[-4:] == ".png"]
         self.screens_cb.clear()
         self.screens_cb.addItems(files)
+        self.screens_cb.model().sort(0)
         self.screens_cb.setCurrentIndex(0)
         if os.path.isfile(self.folder + "/box.txt"):
             with open(self.folder + "/box.txt", 'r') as f:
