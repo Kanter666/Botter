@@ -46,7 +46,8 @@ class FunctionDialog(QtWidgets.QDialog):
                 self.match_img_widget.match_threshold_hs.setValue(function.dictionary["match_threshold"])
             elif "threshold" in function.dictionary:
                 self.get_text_widget.threshold_hs.setValue(function.dictionary["threshold"])
-
+            if "rotate" in function.dictionary:
+                self.match_img_widget.rotate_chb.setChecked(function.dictionary["rotate"])
             exec("self.{}_rb.setChecked(True)\n"
                  "self.function_selected(self.{}_rb)".format(function.type, function.type))
 
