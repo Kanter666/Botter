@@ -127,13 +127,11 @@ class Library(object):
                             file.write("        for angle in [90, 180, 270]:\n"
                                        "            if len(loc[0])>0:\n"
                                        "                break\n"
-                                       "            image = Image.open('/home/adam/git/Botter/fbsnake/Images/head.png').rotate(angle)\n"
-                                       "            image = numpy.array(image)[:, :, ::-1].copy()\n"
-                                       "            image = numpy.array(Image.open('{}').rotate(angle).convert('RGB'))[:, :, ::-1].copy()\n"
+                                       "            image = numpy.rot90(image)\n"
                                        "            res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
                                        "            threshold = 0.{}\n"
                                        "            loc = numpy.where( res >= threshold)\n".format(
-                                function.dictionary["image"], function.dictionary["match_threshold"]
+                                function.dictionary["match_threshold"]
                             )
                             )
                         file.write("        return loc\n\n")
