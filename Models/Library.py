@@ -92,8 +92,8 @@ class Library(object):
                 )
                 if function.type == "click":
                     file.write(
-                        """        pyautogui.click({}, {})\n""".format((int(screen_box["left"] + function.box[0] + function.box[2] / 2)),
-                                                                       int(screen_box["top"] + function.box[1] + function.box[3] / 2)))
+                        """        pyautogui.click((self.screen_box["left"]+{}), (self.screen_box["top"]+{}))\n""".format((function.box[0] + function.box[2] / 2),
+                                                                                                                          (function.box[1] + function.box[3] / 2)))
                 elif function.type == "game_box":
                     file.write("""        return {}\n""".format(function.box))
                 else:
