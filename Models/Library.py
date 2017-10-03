@@ -123,7 +123,17 @@ class Library(object):
                             function.dictionary["image"], function.dictionary["match_threshold"]
                             )
                         )
-                        if "rotate" in function.dictionary and function.dictionary["rotate"]:
+                        if "flip" in function.dictionary and function.dictionary["flip"]:
+                            file.write("        if len(loc[0])>0:\n"
+                                       "            return loc\n"
+                                       "        image = cv2.flip(image, 1)\n"
+                                       "        res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
+                                       "        threshold = 0.{}\n"
+                                       "        loc = numpy.where( res >= threshold)\n".format(
+                                function.dictionary["match_threshold"]
+                            )
+                            )
+                        elif "rotate" in function.dictionary and function.dictionary["rotate"]:
                             file.write("        for angle in [90, 180, 270]:\n"
                                        "            if len(loc[0])>0:\n"
                                        "                break\n"

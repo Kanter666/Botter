@@ -64,7 +64,8 @@ class FunctionDialog(QtWidgets.QDialog):
                 {
                     "image": self.match,
                     "match_threshold": self.match_img_widget.match_threshold_hs.value(),
-                    "rotate": self.match_img_widget.rotate_chb.isChecked()
+                    "rotate": self.match_img_widget.rotate_chb.isChecked(),
+                    "flip": self.match_img_widget.flip_chb.isChecked()
                 }
                 )
         elif text == "Click()":
