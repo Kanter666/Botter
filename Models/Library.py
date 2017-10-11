@@ -73,13 +73,12 @@ class Library(object):
                 file.write("    def locate_screen(self):\n"
                            "        image = cv2.imread('{}/Images/position_img.png')\n"
                            "        with mss() as sct:\n"
-                           "            screen = sct.grab(sct.monitors[0])\n"
-                           "        screen = Image.frombytes('RGB', screen.size, screen.rgb)\n"
-                           "        cropped = numpy.array(screen)[:, :, ::-1].copy()\n"
-                           "        res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
+                           "           sct.shot(mon=-1, output='./screen.png')\n"
+                           "           screen = cv2.imread('./screen.png')\n"
+                           "        res = cv2.matchTemplate(screen, image, cv2.TM_CCOEFF_NORMED)\n"
                            "        loc = numpy.where( res >= 0.8)\n"
                            "        if len(loc[0])>0:\n"
-                           "            self.screen_box['left']=loc[0][0]+{}\n"
+                           "            self.screen_box['top']=loc[0][0]+{}\n"
                            "            self.screen_box['left']=loc[1][0]+{}\n"
                            "\n".format(directory, dict["position_image"][0], dict["position_image"][1]))
 
