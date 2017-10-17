@@ -112,7 +112,11 @@ class Library(object):
                     if function.type == "string":
                         file.write("""        return self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.TextBuilder())\n""")
                     elif function.type == "number":
-                        file.write("""        return float(self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.DigitBuilder()))\n""")
+                        file.write("""        try:\n""")
+                        file.write("""            return float(self.tool.image_to_string(cropped, lang="eng", builder=pyocr.builders.DigitBuilder()))\n""")
+                        file.write("""        except ValueError:\n""")
+                        file.write("""            print("Value error occured while getting number")\n""")
+                        file.write("""            return None\n""")
                     elif function.type == "position":
                         file.write("        image = cv2.imread('{}')\n"
                                    "        cropped = numpy.array(cropped)[:, :, ::-1].copy()\n"
@@ -137,13 +141,13 @@ class Library(object):
                             if "rotate" in function.dictionary and function.dictionary["rotate"]:
                                 file.write("        for angle in [90, 180, 270]:\n"
                                            "            if len(loc[0])>0:\n"
-                                           "                return loc\n"
+                                           "                return [loc[0][0], loc[1][0]]\n"
                                            "            image = numpy.rot90(image)\n"
                                            "            res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
                                            "            threshold = 0.{}\n"
                                            "            loc = numpy.where( res >= threshold)\n"
                                            "            if len(loc[0])>0:\n"
-                                           "                return loc\n"
+                                           "                return [loc[0][0], loc[1][0]]\n"
                                            "            flipmage = cv2.flip(image, 1)\n"
                                            "            res = cv2.matchTemplate(cropped, flipmage, cv2.TM_CCOEFF_NORMED)\n"
                                            "            threshold = 0.{}\n"
@@ -155,7 +159,7 @@ class Library(object):
                         elif "rotate" in function.dictionary and function.dictionary["rotate"]:
                             file.write("        for angle in [90, 180, 270]:\n"
                                        "            if len(loc[0])>0:\n"
-                                       "                break\n"
+                                       "                return [loc[0][0], loc[1][0]]\n"
                                        "            image = numpy.rot90(image)\n"
                                        "            res = cv2.matchTemplate(cropped, image, cv2.TM_CCOEFF_NORMED)\n"
                                        "            threshold = 0.{}\n"
@@ -163,7 +167,7 @@ class Library(object):
                                 function.dictionary["match_threshold"]
                             )
                             )
-                        file.write("        return loc\n\n")
+                        file.write("        return None if len(loc[0])<1 else [loc[0][0], loc[1][0]]\n\n")
                     elif function.type == "change":
                         file.write("        if self.{}_img == cropped:\n"
                                    "            return False\n"
