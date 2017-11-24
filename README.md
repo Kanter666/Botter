@@ -9,7 +9,7 @@ First step for creating bot enviroment would be to record example game. This wil
 ### Main window
 This is the main screen of Botter where you can quickly create functions. 
 
-![Alt text](./botterMain.png?raw=true "Main screen")
+![Alt text](./readme_images/mainDialog.png?raw=true "Main screen")
 
 This screen has multiple features:
 * selection of current screenshot
@@ -20,13 +20,13 @@ This screen has multiple features:
 * select border image - for finding location of game screen - usually edge that is unique and always the same
 
 The run function option will be run on selected screenshot if possible (you can't run hasChanged funcion on one screen,..). Here you can test if you selected good treshold for text recognition,..
-![Alt text](./result.png?raw=true "Main screen")
+![Alt text](./readme_images/resultDialog.png?raw=true "Main screen")
 
 
 ### Create functions
 This is pop-up window that shows when you press "Add function for box" button. 
 
-![Alt text](./exampleFunction.png?raw=true "Example function")
+![Alt text](./readme_images/functionDialog.png?raw=true "Example function")
 
 Here you can choose different types of functions and tune their properties.
 
